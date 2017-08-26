@@ -80,4 +80,4 @@ TBD
 
 ## Acknowledgments
 
-* Thank you Scott Warfield for being out client
+* Thank you Scott Warfield for being our client
