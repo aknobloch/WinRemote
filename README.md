@@ -76,7 +76,7 @@ We use [GitHub](http://github.com/) for versioning. For the versions available, 
 
 * **Aaron Knobloch** - *Update with role* - [aknobloch](https://github.com/aknobloch)
 * **Jeff Graves** - *Update with role* - [giJeff](https://github.com/giJeff)
-* **Taylor Brust** - *Update with role* - [tbrustggc](https://github.com/tbrustggc)
+* **Taylor Brust** - *UI/UX Lead* - [tbrustggc](https://github.com/tbrustggc)
 * **Tobin Michael Crone** - *Update with role* - [tobincrone](https://github.com/tobincrone)
 
 See also the list of [contributors](https://github.com/soft-eng-practicum/disabledTech/graphs/contributors) who participated in this project.
