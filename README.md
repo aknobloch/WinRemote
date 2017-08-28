@@ -74,10 +74,10 @@ We use [GitHub](http://github.com/) for versioning. For the versions available, 
 
 ## Authors
 
-* **Aaron Knobloch** - Lead Programmer / Team Manager - [aknobloch](https://github.com/aknobloch)
-* **Jeff Graves** - *Update with role* - [giJeff](https://github.com/giJeff)
-* **Taylor Brust** - *UI/UX Lead* - [tbrustggc](https://github.com/tbrustggc)
-* **Tobin Michael Crone** - Data Modeling - [tobincrone](https://github.com/tobincrone)
+* **1. Aaron Knobloch** - Lead Programmer / Team Manager - [aknobloch](https://github.com/aknobloch)
+* **2. Jeff Graves** - Lead Tester / Document Lead - [giJeff](https://github.com/giJeff)
+* **3. Taylor Brust** - *UI/UX Lead* - [tbrustggc](https://github.com/tbrustggc)
+* **4. Tobin Michael Crone** - Data Modeling - [tobincrone](https://github.com/tobincrone)
 
 See also the list of [contributors](https://github.com/soft-eng-practicum/disabledTech/graphs/contributors) who participated in this project.
 
