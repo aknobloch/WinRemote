@@ -66,7 +66,7 @@ Pictures can be added to help with the process?
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](https://github.com/soft-eng-practicum/disabledTech/blob/master/CONTRIBUTING) for details on our code of conduct, and the process for submitting pull requests to us.
+Please read [CONTRIBUTING.md](https://github.com/soft-eng-practicum/disabledTech/blob/master/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
 
 ## Versioning
 
