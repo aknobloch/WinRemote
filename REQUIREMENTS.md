@@ -23,6 +23,7 @@ We will use a simple, yet effective method for prioritizing tasks. "Should-a, wo
 * [S3] Custom-defined script executions (User creates batch or python script and corresponding Android button to execute)
 * [W2] Windows configuration shortcuts (Volume up/down, Brightness, Lock PC, Restart, Shutdown)
 * [W2] Ability to define custom templates on the Android interface and switch between them
+* [W3] Contextual switching of templates (I.E. recognize that Word is open and switch to Word template on Android)
 * [W3] Creation of customized keycode combinations (I.E. chain together Ctrl-A and Ctrl-C with single press)
 * [W4] Common macros available to user.
 * [W4] Simple logging of executed commands.
