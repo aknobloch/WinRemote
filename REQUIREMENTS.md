@@ -29,7 +29,8 @@ We will use a simple, yet effective method for prioritizing tasks. "Should-a, wo
 * [W4] Simple logging of executed commands.
 * [C3] Application awareness and contextual execution.
 * [C3] Voice-activated controls on Android.
-* [C5] Privatized, secure connection between Android and Windows application.
+* [C4] Privatized, secure connection between Android and Windows application.
+* [C5] Resizale grid layout for templates (I.E. 3x3, 1x2)
 
 ## Non-Functional Standards and Requirements
 * Applications should be latency-free. Commands should execute with negligible delay.
