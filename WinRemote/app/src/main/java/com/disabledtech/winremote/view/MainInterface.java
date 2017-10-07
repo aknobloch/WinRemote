@@ -1,17 +1,13 @@
-package com.disabledtech.winremote;
+package com.disabledtech.winremote.view;
 
 import android.Manifest;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -22,6 +18,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.disabledtech.winremote.control.BTConnectionClient;
+import com.disabledtech.winremote.R;
+import com.disabledtech.winremote.interfaces.IServerConnectionListener;
+import com.disabledtech.winremote.utils.Debug;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -110,7 +111,7 @@ public class MainInterface extends AppCompatActivity
         switch(requestCode)
         {
             case REQUEST_ACCESS_COARSE_LOCATION :
-                connectionClient.connect();
+                connectionClient.connectToServer();
                 break;
         }
     }
@@ -179,7 +180,7 @@ public class MainInterface extends AppCompatActivity
 
             connectedSocket.connect();
 
-            Log.d("BT", "Connected and ready to stream data!");
+            Debug.log("Connected and ready to stream data!");
             serverSocket = connectedSocket;
 
         } catch (IOException e) {

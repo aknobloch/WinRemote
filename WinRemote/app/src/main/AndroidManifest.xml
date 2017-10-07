@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainInterface"
+            android:name=".view.MainInterface"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".BTConnectionClient">
+        <receiver android:name=".control.BTConnectionClient">
             <intent-filter>
                 <action android:name="android.bluetooth.device.action.FOUND"></action>
                 <action android:name="android.bluetooth.adapter.action.DISCOVERY_STARTED"></action>

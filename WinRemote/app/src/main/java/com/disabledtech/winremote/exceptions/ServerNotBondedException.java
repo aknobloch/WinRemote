@@ -1,6 +1,6 @@
-package com.disabledtech.winremote;
+package com.disabledtech.winremote.exceptions;
 
-class ServerNotBondedException extends Exception {
+public class ServerNotBondedException extends Exception {
 
     public ServerNotBondedException()
     {
