@@ -11,7 +11,8 @@ public interface IServerConnectionListener {
     enum SERVER_ERROR_CODE
     {
         BLUETOOTH_NOT_AVAILABLE,
-        SOCKET_CONNECTION_FAILED, SERVER_NOT_FOUND;
+        SOCKET_CONNECTION_FAILED,
+        SERVER_NOT_FOUND;
     }
 
     /**

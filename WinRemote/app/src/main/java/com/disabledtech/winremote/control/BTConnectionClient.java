@@ -35,10 +35,8 @@ public class BTConnectionClient extends BroadcastReceiver {
 
     /**
      * Initializes the bluetooth adapter and enables it
-     * if it is not already enabled.
-     *
-     * @throws BluetoothInitializationException If the adapter cannot be initialized. This could
-     * be from the device not supporting bluetooth, or from an error when enabling. See
+     * if it is not already enabled. Will notify the callback
+     * if an initialization error occurs.
      *
      */
     public BTConnectionClient(IServerConnectionListener listener) {
@@ -177,7 +175,10 @@ public class BTConnectionClient extends BroadcastReceiver {
         try
         {
             BluetoothSocket socketConnection = server.createInsecureRfcommSocketToServiceRecord(SERVER_UUID); // TODO secure
+            socketConnection.connect();
+
             connectionCallbackListener.serverConnected(socketConnection);
+
             serverFound = true;
             bluetoothAdapter.cancelDiscovery();
 
