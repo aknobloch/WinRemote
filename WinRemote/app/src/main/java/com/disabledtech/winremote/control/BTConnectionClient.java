@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.ParcelUuid;
 
-import com.disabledtech.winremote.exceptions.BluetoothInitializationException;
 import com.disabledtech.winremote.interfaces.IServerConnectionListener;
 import com.disabledtech.winremote.utils.Debug;
 
@@ -29,9 +28,9 @@ public class BTConnectionClient extends BroadcastReceiver {
     private final String SERVER_ID = "2BBF4D1B-9A19-4709-9399-B6AB4A88E777";
     private final UUID SERVER_UUID = UUID.fromString(SERVER_ID);
 
-    private BluetoothAdapter bluetoothAdapter;
-    private IServerConnectionListener connectionCallbackListener;
-    private boolean serverFound;
+    private BluetoothAdapter m_BluetoothAdapter;
+    private IServerConnectionListener m_ConnectionCallbackListener;
+    private boolean m_ServerFound;
 
     /**
      * Initializes the bluetooth adapter and enables it
@@ -41,8 +40,8 @@ public class BTConnectionClient extends BroadcastReceiver {
      */
     public BTConnectionClient(IServerConnectionListener listener) {
 
-        connectionCallbackListener = listener;
-        serverFound = false;
+        m_ConnectionCallbackListener = listener;
+        m_ServerFound = false;
 
         if(initializeBluetooth() == false)
         {
@@ -60,14 +59,14 @@ public class BTConnectionClient extends BroadcastReceiver {
     private boolean initializeBluetooth() {
 
         // FIXME: this might require different configs for < JELLY_BEAN_MR2, but the docs are contradictory. Revisit w/ emulator
-        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        m_BluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
-        if(bluetoothAdapter == null)
+        if(m_BluetoothAdapter == null)
         {
             return false;
         }
 
-        return bluetoothAdapter.isEnabled() || bluetoothAdapter.enable();
+        return m_BluetoothAdapter.isEnabled() || m_BluetoothAdapter.enable();
     }
 
     /**
@@ -80,17 +79,17 @@ public class BTConnectionClient extends BroadcastReceiver {
      */
     public void connectToServer() {
 
-        if (bluetoothAdapter.isDiscovering()) {
+        if (m_BluetoothAdapter.isDiscovering()) {
 
-            bluetoothAdapter.cancelDiscovery();
+            m_BluetoothAdapter.cancelDiscovery();
         }
 
-        BluetoothDevice server = searchForServer(bluetoothAdapter.getBondedDevices());
+        BluetoothDevice server = searchForServer(m_BluetoothAdapter.getBondedDevices());
 
         if(server == null)
         {
             // Notifications and logic continued in onReceive
-            bluetoothAdapter.startDiscovery();
+            m_BluetoothAdapter.startDiscovery();
             return;
         }
 
@@ -134,9 +133,9 @@ public class BTConnectionClient extends BroadcastReceiver {
             case BluetoothAdapter.ACTION_DISCOVERY_FINISHED:
 
                 Debug.log("Discovery ended");
-                if(serverFound == false)
+                if(m_ServerFound == false)
                 {
-                    connectionCallbackListener.notifyRecoverableFailure(SERVER_NOT_FOUND);
+                    m_ConnectionCallbackListener.notifyRecoverableFailure(SERVER_NOT_FOUND);
                 }
                 break;
         }
@@ -174,19 +173,20 @@ public class BTConnectionClient extends BroadcastReceiver {
 
         try
         {
-            BluetoothSocket socketConnection = server.createInsecureRfcommSocketToServiceRecord(SERVER_UUID); // TODO secure
+            BluetoothSocket socketConnection =
+                    server.createInsecureRfcommSocketToServiceRecord(SERVER_UUID); // TODO secure
+
             socketConnection.connect();
+            m_ConnectionCallbackListener.serverConnected(socketConnection);
 
-            connectionCallbackListener.serverConnected(socketConnection);
-
-            serverFound = true;
-            bluetoothAdapter.cancelDiscovery();
+            m_ServerFound = true;
+            m_BluetoothAdapter.cancelDiscovery();
 
         } catch (IOException e) {
 
             Debug.logError("Could not open server connection!");
             e.printStackTrace();
-            connectionCallbackListener.notifyRecoverableFailure(SOCKET_CONNECTION_FAILED);
+            m_ConnectionCallbackListener.notifyRecoverableFailure(SOCKET_CONNECTION_FAILED);
         }
 
     }
@@ -217,7 +217,7 @@ public class BTConnectionClient extends BroadcastReceiver {
 
             if(serverUUIDContained(device.getUuids()))
             {
-                return bluetoothAdapter.getRemoteDevice(device.getAddress());
+                return m_BluetoothAdapter.getRemoteDevice(device.getAddress());
             }
         }
 
