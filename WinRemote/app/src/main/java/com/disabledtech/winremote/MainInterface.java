@@ -1,8 +1,17 @@
 package com.disabledtech.winremote;
 
+import android.Manifest;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,11 +21,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import java.io.IOException;
+import java.io.OutputStream;
 
 public class MainInterface extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, IServerConnectionListener {
 
-    @Override
+    private BTConnectionClient connectionClient;
+    private static final int REQUEST_ACCESS_COARSE_LOCATION = 1;
+    private BluetoothSocket serverSocket;
+
+    @Override // TODO code cleanup for auto-generated crap
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_interface);
@@ -40,6 +57,62 @@ public class MainInterface extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        connectionClient = new BTConnectionClient(this);
+    }
+
+    public void onClick(View view)
+    {
+        switch(view.getId())
+        {
+            case R.id.connect :
+                // TODO android < 6.0 doesn't require this, refactor and clean
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                        REQUEST_ACCESS_COARSE_LOCATION);
+                break;
+
+            case R.id.send_data :
+                sendData();
+                break;
+        }
+    }
+
+    private void sendData() {
+
+        if(serverSocket == null) {
+
+            Toast.makeText(this, "Connection not established.", Toast.LENGTH_SHORT);
+            return;
+        }
+
+        try
+        {
+            OutputStream out = serverSocket.getOutputStream();
+            out.write(0);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        boolean permissionGranted = grantResults.length > 0 &&
+                grantResults[0] == PackageManager.PERMISSION_GRANTED;
+
+        if(permissionGranted == false)
+        {
+            return; // TODO
+        }
+
+        switch(requestCode)
+        {
+            case REQUEST_ACCESS_COARSE_LOCATION :
+                connectionClient.connect();
+                break;
+        }
     }
 
     @Override
@@ -97,5 +170,20 @@ public class MainInterface extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void serverConnected(BluetoothSocket connectedSocket) {
+
+        try {
+
+            connectedSocket.connect();
+
+            Log.d("BT", "Connected and ready to stream data!");
+            serverSocket = connectedSocket;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
