@@ -6,7 +6,9 @@ import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.ParcelUuid;
+import android.util.Log;
 
 import com.disabledtech.winremote.interfaces.IServerConnectionListener;
 import com.disabledtech.winremote.utils.Debug;
@@ -32,22 +34,42 @@ public class BTConnectionClient extends BroadcastReceiver {
     private IServerConnectionListener m_ConnectionCallbackListener;
     private boolean m_ServerFound;
 
+    public BTConnectionClient(){};
+
     /**
      * Initializes the bluetooth adapter and enables it
      * if it is not already enabled. Will notify the callback
      * if an initialization error occurs.
      *
      */
-    public BTConnectionClient(IServerConnectionListener listener) {
+    public BTConnectionClient(Context context, IServerConnectionListener listener) {
 
         m_ConnectionCallbackListener = listener;
         m_ServerFound = false;
+
+        registerReceivedEvents(context);
 
         if(initializeBluetooth() == false)
         {
             Debug.logError("Bluetooth initialization failed!");
             listener.notifyCriticalFailure(BLUETOOTH_NOT_AVAILABLE);
-        };
+        }
+    }
+
+    /**
+     * Registers this broadcast receiver to receive
+     * the relevant events for the state of bluetooth.
+     *
+     * @param context
+     */
+    private void registerReceivedEvents(Context context) {
+
+        IntentFilter broadcastEventFilter = new IntentFilter();
+        broadcastEventFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
+        broadcastEventFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+        broadcastEventFilter.addAction(BluetoothDevice.ACTION_FOUND);
+
+        context.registerReceiver(this, broadcastEventFilter);
     }
 
     /**
@@ -81,19 +103,20 @@ public class BTConnectionClient extends BroadcastReceiver {
 
         if (m_BluetoothAdapter.isDiscovering()) {
 
-            m_BluetoothAdapter.cancelDiscovery();
-        }
-
-        BluetoothDevice server = searchForServer(m_BluetoothAdapter.getBondedDevices());
-
-        if(server == null)
-        {
-            // Notifications and logic continued in onReceive
-            m_BluetoothAdapter.startDiscovery();
             return;
         }
 
-        connectToServerAndNotify(server);
+//        BluetoothDevice server = searchForServer(m_BluetoothAdapter.getBondedDevices());
+
+        m_BluetoothAdapter.startDiscovery();
+//        if(server == null)
+//        {
+//            // Notifications and logic continued in onReceive
+//            m_BluetoothAdapter.startDiscovery();
+//            return;
+//        }
+//
+//        connectToServerAndNotify(server);
     }
 
     /**
@@ -230,6 +253,8 @@ public class BTConnectionClient extends BroadcastReceiver {
      * @return True if found, false otherwise.
      */
     private boolean serverUUIDContained(ParcelUuid[] uuidList) {
+
+        if(uuidList == null) return false;
 
         for(int i = 0; i < uuidList.length; i++)
         {

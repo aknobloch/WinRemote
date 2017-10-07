@@ -1,8 +1,11 @@
 package com.disabledtech.winremote.view;
 
 import android.Manifest;
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothSocket;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -145,7 +148,7 @@ public class MainActivity extends AppCompatActivity
 
         if(m_ConnectionClient == null)
         {
-            m_ConnectionClient = new BTConnectionClient(this);
+            m_ConnectionClient = new BTConnectionClient(this, this);
         }
 
         m_ConnectionClient.connectToServer();

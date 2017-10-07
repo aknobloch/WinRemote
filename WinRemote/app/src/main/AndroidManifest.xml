@@ -24,13 +24,13 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".control.BTConnectionClient">
-            <intent-filter>
-                <action android:name="android.bluetooth.device.action.FOUND"></action>
-                <action android:name="android.bluetooth.adapter.action.DISCOVERY_STARTED"></action>
-                <action android:name="android.bluetooth.adapter.action.DISCOVERY_FINISHED"></action>
-            </intent-filter>
-        </receiver>
+        <!--<receiver android:name=".control.BTConnectionClient">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.bluetooth.device.action.FOUND"></action>-->
+                <!--<action android:name="android.bluetooth.adapter.action.DISCOVERY_STARTED"></action>-->
+                <!--<action android:name="android.bluetooth.adapter.action.DISCOVERY_FINISHED"></action>-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
     </application>
 
 </manifest>
