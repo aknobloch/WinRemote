@@ -26,11 +26,12 @@ import com.disabledtech.winremote.utils.Device;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class MainInterface extends AppCompatActivity
+public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, IServerConnectionListener {
 
+    private static final int REQUEST_ACCESS_COARSE_LOCATION = 1; // used to identify permission requests
+
     private BTConnectionClient connectionClient;
-    private static final int REQUEST_ACCESS_COARSE_LOCATION = 1;
     private BluetoothSocket serverSocket;
 
     @Override
@@ -52,10 +53,11 @@ public class MainInterface extends AppCompatActivity
         {
             case R.id.connect :
 
-                sendData();
+                getServerConnection();
                 break;
 
             case R.id.send_data :
+                
                 sendData();
                 break;
         }
@@ -133,7 +135,11 @@ public class MainInterface extends AppCompatActivity
      */
     public void getServerConnection() {
 
-        connectionClient = new BTConnectionClient(this);
+        if(connectionClient == null)
+        {
+            connectionClient = new BTConnectionClient(this);
+        }
+
         connectionClient.connectToServer();
     }
 
@@ -202,7 +208,7 @@ public class MainInterface extends AppCompatActivity
 
     private void initializeLayout() {
 
-        setContentView(R.layout.activity_main_interface);
+        setContentView(R.layout.activity_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
