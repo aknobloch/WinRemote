@@ -7,9 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.ParcelUuid;
 import android.os.Parcelable;
-import android.util.Log;
 
 import com.disabledtech.winremote.interfaces.IServerConnectionListener;
 import com.disabledtech.winremote.utils.Debug;
@@ -34,6 +32,7 @@ public class BTConnectionClient extends BroadcastReceiver {
     private BluetoothAdapter m_BluetoothAdapter;
     private IServerConnectionListener m_ConnectionCallbackListener;
     private List<BluetoothDevice> m_NearbyDevices;
+    private boolean m_ActivelySearching;
 
     public BTConnectionClient(){};
 
@@ -46,8 +45,9 @@ public class BTConnectionClient extends BroadcastReceiver {
     public BTConnectionClient(Context context, IServerConnectionListener listener) {
 
         m_ConnectionCallbackListener = listener;
+        m_ActivelySearching = false;
 
-        registerReceivedEvents(context);
+        registerBroadcastEvents(context);
 
         if(initializeBluetooth() == false)
         {
@@ -62,7 +62,7 @@ public class BTConnectionClient extends BroadcastReceiver {
      *
      * @param context
      */
-    private void registerReceivedEvents(Context context) {
+    private void registerBroadcastEvents(Context context) {
 
         IntentFilter broadcastEventFilter = new IntentFilter();
         broadcastEventFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
@@ -101,11 +101,12 @@ public class BTConnectionClient extends BroadcastReceiver {
      */
     public void connectToServer() {
 
-        if (m_BluetoothAdapter.isDiscovering()) {
+        if (m_BluetoothAdapter.isDiscovering() || m_ActivelySearching) {
 
             return;
         }
 
+        m_ActivelySearching = true;
         m_NearbyDevices = new ArrayList<>();
         m_BluetoothAdapter.startDiscovery();
     }
@@ -132,6 +133,15 @@ public class BTConnectionClient extends BroadcastReceiver {
             case BluetoothDevice.ACTION_UUID:
 
                 handleFetchUUIDResponse(intent);
+
+                // if we are still actively searching, we need to make sure
+                // that there are devices left waiting to return their fetched
+                // UUIDs. If there are not, then we had no luck finding the server.
+                if(m_ActivelySearching) {
+
+                    checkPendingFetchStatus();
+                }
+
                 break;
 
             case BluetoothAdapter.ACTION_DISCOVERY_STARTED:
@@ -143,14 +153,31 @@ public class BTConnectionClient extends BroadcastReceiver {
 
                 Debug.log("Discovery ended");
 
-                for(BluetoothDevice device : m_NearbyDevices)
-                {
-                    device.fetchUuidsWithSdp(); // resumed in handleFetchUUIDResponse
-                }
+                handleDiscoveryFinished();
                 break;
         }
     }
 
+    private void handleDiscoveryFinished() {
+
+        if(m_NearbyDevices.size() == 0)
+        {
+            m_ConnectionCallbackListener.notifyRecoverableFailure(SERVER_NOT_FOUND);
+            m_ActivelySearching = false;
+        }
+
+        for(BluetoothDevice device : m_NearbyDevices)
+        {
+            device.fetchUuidsWithSdp(); // resumed in handleFetchUUIDResponse
+        }
+    }
+
+    /**
+     * Called when a device is found in the discovery. The device will
+     * be added to the list of nearby devices, to be polled later.
+     *
+     * @param intent
+     */
     private void handleDeviceFound(Intent intent) {
 
         BluetoothDevice foundDevice = extractDeviceFromIntent(intent);
@@ -163,14 +190,42 @@ public class BTConnectionClient extends BroadcastReceiver {
         m_NearbyDevices.add(foundDevice);
     }
 
+    /**
+     * Called when the SDP poll for UUID's is complete. Searches
+     * the reported UUID's for the server.
+     *
+     * @param intent
+     */
     private void handleFetchUUIDResponse(Intent intent) {
 
-        BluetoothDevice devicePolled = extractDeviceFromIntent(intent);
-        Parcelable[] UUIDs = intent.getParcelableArrayExtra(BluetoothDevice.EXTRA_UUID);
+        // no need to check if we aren't searching...
+        if(m_ActivelySearching == false) {
 
-        if(serverUUIDContained(UUIDs))
-        {
+            return;
+        }
+
+        BluetoothDevice devicePolled = extractDeviceFromIntent(intent);
+        m_NearbyDevices.remove(devicePolled); // no longer keep track of this device
+
+        Parcelable[] UUIDs = intent.getParcelableArrayExtra(BluetoothDevice.EXTRA_UUID);
+        if(serverUUIDContained(UUIDs)) {
+
             connectToServerAndNotify(devicePolled);
+            m_ActivelySearching = false;
+        }
+    }
+
+    /**
+     * Checks the status of pe1nding UUID fetches of nearby devices. If no
+     * devices are left, then a notification will be sent to the listener
+     * to alert them that the server was not found.
+     */
+    private void checkPendingFetchStatus() {
+
+        if(m_NearbyDevices.size() == 0) {
+
+            m_ConnectionCallbackListener.notifyRecoverableFailure(SERVER_NOT_FOUND);
+            m_ActivelySearching = false;
         }
     }
 
