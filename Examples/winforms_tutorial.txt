@@ -1,0 +1,5 @@
+Here is a good online tutorial for getting started with Winforms:
+http://zetcode.com/gui/csharpwinforms/
+
+Good explanation of docking and anchoring:
+http://www.techrepublic.com/article/manage-winform-controls-using-the-anchor-and-dock-properties/
