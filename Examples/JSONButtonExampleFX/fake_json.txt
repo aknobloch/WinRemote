@@ -1,0 +1,21 @@
+{
+    "buttonData" :
+    [
+        {
+              "ID": 4862,
+              "Name": "Copy"
+        },
+        {
+              "ID": 1679,
+              "Name": "Paste"
+        },
+        {
+              "ID": 9826,
+              "Name": "Clear"
+        },
+        {
+              "ID": 3497,
+              "Name": "Print"
+        }
+    ]
+}
