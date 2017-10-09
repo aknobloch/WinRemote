@@ -58,5 +58,10 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="control\" />
+    <Folder Include="exceptions\" />
+    <Folder Include="model\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
