@@ -19,7 +19,10 @@ namespace BTConnectionService
         {
             if(Log.DEBUG_MODE == false)
             {
+                #pragma warning disable CS0162 // Unreachable code detected
                 var handle = GetConsoleWindow();
+                #pragma warning restore CS0162 // Unreachable code detected
+
                 ShowWindow(handle, CONSOLE_HIDE);
             }
 
