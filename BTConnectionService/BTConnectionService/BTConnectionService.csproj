@@ -49,14 +49,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BTConnectionServer.cs" />
-    <Compile Include="BTConnectionClient.cs" />
-    <Compile Include="Log.cs" />
-    <Compile Include="Start.cs" />
+    <Compile Include="control\BTConnectionServer.cs" />
+    <Compile Include="control\BTDataIO.cs" />
+    <Compile Include="model\WinAction.cs" />
+    <Compile Include="utils\Log.cs" />
+    <Compile Include="view\Start.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="exceptions\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

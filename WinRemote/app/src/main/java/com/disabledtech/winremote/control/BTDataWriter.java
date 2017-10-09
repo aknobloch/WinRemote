@@ -14,7 +14,7 @@ import java.io.OutputStream;
  * Created by aknobloch on 10/7/17.
  */
 
-public class BTDataWriter {
+public class BTDataWriter { // TODO rename to BTDataIO
 
     private BluetoothSocket m_ServerSocket;
 
