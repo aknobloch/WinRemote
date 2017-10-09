@@ -7,6 +7,7 @@ using InTheHand.Net;
 using InTheHand.Net.Bluetooth;
 using InTheHand.Net.Sockets;
 using System.IO;
+using System.Threading;
 
 namespace BTConnectionService
 {
@@ -21,28 +22,33 @@ namespace BTConnectionService
 
         public void StartServer()
         {
-            // TODO synchronous server 
-            Console.WriteLine("Begin init.");
-            var bluetoothListener = new BluetoothListener(UUID);
-            bluetoothListener.Start();
+            Thread serverThread = new Thread(() =>
+           {
+               Log.write("Begin init.");
+               var bluetoothListener = new BluetoothListener(UUID);
+               bluetoothListener.Start();
 
-            Console.WriteLine("Begin accepting socket.");
-            BluetoothClient connection = bluetoothListener.AcceptBluetoothClient();
-            Stream connectionStream = connection.GetStream();
+               Log.write("Begin accepting socket.");
+               BluetoothClient connection = bluetoothListener.AcceptBluetoothClient();
+               Stream connectionStream = connection.GetStream();
 
-            Console.WriteLine("Begin reading.");
+               Log.write("Begin reading.");
 
-            while (connectionStream.CanRead)
-            {
-                int data = connectionStream.ReadByte();
+               while (connectionStream.CanRead)
+               {
+                   int data = connectionStream.ReadByte();
 
-                if (data != -1)
-                {
-                    Console.WriteLine(data);
-                }
-            }
+                   if (data != -1)
+                   {
+                       Log.write(data);
+                   }
+               }
 
-            Console.WriteLine("End reading.");
+               Log.write("End reading.");
+           });
+
+            serverThread.IsBackground = false;
+            serverThread.Start();
         }
     }
 }

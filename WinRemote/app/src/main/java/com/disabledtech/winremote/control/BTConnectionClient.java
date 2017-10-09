@@ -15,6 +15,7 @@ import com.disabledtech.winremote.utils.Debug;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import static com.disabledtech.winremote.interfaces.IServerConnectionListener.SERVER_ERROR_CODE.*;
@@ -107,6 +108,9 @@ public class BTConnectionClient extends BroadcastReceiver {
         }
 
         m_ActivelySearching = true;
+
+        // TODO check bonded devices first
+
         m_NearbyDevices = new ArrayList<>();
         m_BluetoothAdapter.startDiscovery();
     }

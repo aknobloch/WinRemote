@@ -6,7 +6,7 @@ import android.util.Log;
 /**
  * Utility class for assisting with debug functionality.
  */
-public class Debug
+public class Debug // TODO rename to log
 {
 	private static final boolean DEBUG_MODE = true; // TODO ensure false on release
 
