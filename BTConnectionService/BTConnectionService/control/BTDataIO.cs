@@ -32,7 +32,7 @@ namespace BTConnectionService.control
         /// <returns>WinAction with the data read from the server</returns>
         public WinAction Read()
         {
-            WinAction data;
+            WinAction data = new WinAction();
 
             data.name = "TODO: Interface w/ database"; // TODO
             data.action = "TODO: Interface w/ database";

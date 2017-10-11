@@ -1,11 +1,8 @@
 package com.disabledtech.winremote.view;
 
 import android.Manifest;
-import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothSocket;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -21,26 +18,27 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.GridLayout;
 
 import com.disabledtech.winremote.R;
 import com.disabledtech.winremote.control.BTConnectionClient;
-import com.disabledtech.winremote.control.BTDataWriter;
+import com.disabledtech.winremote.control.BTDataIO;
 import com.disabledtech.winremote.interfaces.IServerConnectionListener;
 import com.disabledtech.winremote.model.WinAction;
+import com.disabledtech.winremote.model.WinActionButton;
 import com.disabledtech.winremote.utils.Debug;
 import com.disabledtech.winremote.utils.Device;
 
 import java.io.IOException;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, IServerConnectionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, IServerConnectionListener, View.OnClickListener {
 
     private static final int REQUEST_ACCESS_COARSE_LOCATION = 1; // used to identify permission requests
 
     private BTConnectionClient m_ConnectionClient;
-    private BTDataWriter m_DataWriter;
-
-    private Button m_SendDataButton;
+    private BTDataIO m_DataIO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,18 +57,26 @@ public class MainActivity extends AppCompatActivity
      */
     public void onClick(View view)
     {
-        switch(view.getId())
+        if(view instanceof WinActionButton)
         {
-            case R.id.connect :
+            handleWinButtonPressed((WinActionButton) view);
+            return;
+        }
 
-                Device.showToast(this, "Attempting connection...");
-                getServerConnection();
-                break;
+        Debug.logError("UI view click not implemented!");
+    }
 
-            case R.id.send_data :
-
-                sendData();
-                break;
+    private void handleWinButtonPressed(WinActionButton buttonPressed)
+    {
+        try
+        {
+            m_DataIO.send(buttonPressed.getWinAction());
+        }
+        catch (IOException e)
+        {
+            // TODO UI feedback
+            Debug.logError("Error sending button information to server.");
+            e.printStackTrace();
         }
     }
 
@@ -82,8 +88,9 @@ public class MainActivity extends AppCompatActivity
         // TODO options menu
         switch(id)
         {
-            case R.id.action_settings :
-
+            case R.id.action_connect:
+                Device.showToast(this, "Attempting connection...");
+                getServerConnection();
                 return true;
         }
 
@@ -160,7 +167,7 @@ public class MainActivity extends AppCompatActivity
 
         try {
 
-            m_DataWriter.send(action);
+            m_DataIO.send(action);
 
         } catch (IOException e) {
 
@@ -201,8 +208,29 @@ public class MainActivity extends AppCompatActivity
     public void serverConnected(BluetoothSocket connectedSocket) {
 
         Device.showToast(this, "Connection to the server made!");
-        m_DataWriter = new BTDataWriter(connectedSocket);
-        m_SendDataButton.setEnabled(true);
+        m_DataIO = new BTDataIO(connectedSocket);
+
+        List<WinAction> userActions = m_DataIO.getActionData();
+        populateActivityButtons(userActions);
+    }
+
+    /**
+     * Takes the given list of WinActions and populates the UI based on
+     * those actions.
+     *
+     * @param userActions
+     */
+    private void populateActivityButtons(List<WinAction> userActions)
+    {
+        GridLayout layout = (GridLayout) findViewById(R.id.grid_layout);
+
+        // TODO pretty buttons
+        for(WinAction action : userActions)
+        {
+            WinActionButton actionButton = new WinActionButton(this, action);
+            actionButton.setOnClickListener(this);
+            layout.addView(actionButton);
+        }
     }
 
     @Override
@@ -221,20 +249,8 @@ public class MainActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_main);
 
-        m_SendDataButton = (Button) findViewById(R.id.send_data);
-        m_SendDataButton.setEnabled(false);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

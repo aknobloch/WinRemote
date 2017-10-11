@@ -19,11 +19,14 @@ namespace BTConnectionService
         {
             if(Log.DEBUG_MODE == false)
             {
+
+                #pragma warning disable CS0162 // Unreachable code detected
                 var handle = GetConsoleWindow();
                 ShowWindow(handle, CONSOLE_HIDE);
+                #pragma warning restore CS0162 // Unreachable code detected
             }
 
-            new BTConnectionServer().StartServer();
+            new BTConnectionServer().StartAsynchronousServer();
             Console.ReadLine();
         }
     }

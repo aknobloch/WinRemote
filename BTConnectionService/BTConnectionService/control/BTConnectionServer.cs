@@ -21,8 +21,30 @@ namespace BTConnectionService
 
         }
 
-        public void StartServer()
+        public void StartAsynchronousServer()
         {
+            Log.write("Initializing server w/ UUID: " + UUID.ToString());
+
+            var bluetoothListener = new BluetoothListener(UUID);
+            bluetoothListener.Start();
+
+            Log.write("Server socket initialized. Waiting...");
+            BluetoothClient connection = bluetoothListener.AcceptBluetoothClient();
+
+            Log.write("Connection established.");
+            BTDataIO clientStream = new BTDataIO(connection.GetStream());
+
+            while (clientStream.CanRead())
+            {
+                clientStream.Read();
+            }
+
+            Log.write("End reading.");
+        }
+
+        public void StartSynchronousServer()
+        {
+            // TODO SDP discovery not successful in background thread.
             Thread serverThread = new Thread(() =>
            {
                Log.write("Initializing server w/ UUID: " + UUID.ToString());

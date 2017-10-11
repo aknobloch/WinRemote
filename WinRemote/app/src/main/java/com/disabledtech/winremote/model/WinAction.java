@@ -3,15 +3,15 @@ package com.disabledtech.winremote.model;
 /**
  * This class is a model of a window action. It contains
  * all relevant information of an action, such as the
- * command, ID and any other pertinent information.
+ * command, m_ID and any other pertinent information.
  *
  * Created by aknobloch on 10/7/17.
  */
 
 public class WinAction {
 
-    private String displayName;
-    private int ID;
+    private String m_DisplayName;
+    private int m_ID;
 
     /**
      * Creates a WinAction with the associated display
@@ -25,21 +25,21 @@ public class WinAction {
     public WinAction(String displayName, int uniqueID)
     {
         setDisplayName(displayName);
-        this.ID = uniqueID;
+        this.m_ID = uniqueID;
     }
 
     public void setDisplayName(String newName)
     {
-        this.displayName = newName;
+        this.m_DisplayName = newName;
     }
 
     public String getDisplayName()
     {
-        return this.displayName;
+        return this.m_DisplayName;
     }
 
     public int getID()
     {
-        return this.ID;
+        return this.m_ID;
     }
 }
