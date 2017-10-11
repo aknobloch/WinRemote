@@ -161,21 +161,6 @@ public class MainActivity extends AppCompatActivity
         m_ConnectionClient.connectToServer();
     }
 
-    private void sendData() {
-
-        WinAction action = new WinAction("Dummy Button", 0); // TODO actual buttons
-
-        try {
-
-            m_DataIO.send(action);
-
-        } catch (IOException e) {
-
-            Debug.logError("Error sending data to server!");
-            e.printStackTrace();
-        }
-    }
-
         /**
      * Returned after the request permission dialog is given. If permissions
      * were successful, then a server connection will attempt to be established.
