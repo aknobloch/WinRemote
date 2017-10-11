@@ -1,6 +1,0 @@
-/media/Storage/Downloads/jetbrains-rider/MonoExample/MonoExample/bin/Debug/MonoExample.exe
-/media/Storage/Downloads/jetbrains-rider/MonoExample/MonoExample/bin/Debug/MonoExample.pdb
-/media/Storage/Downloads/jetbrains-rider/MonoExample/MonoExample/obj/Debug/MonoExample.csprojResolveAssemblyReference.cache
-/media/Storage/Downloads/jetbrains-rider/MonoExample/MonoExample/obj/Debug/MonoExample.csproj.CoreCompileInputs.cache
-/media/Storage/Downloads/jetbrains-rider/MonoExample/MonoExample/obj/Debug/MonoExample.exe
-/media/Storage/Downloads/jetbrains-rider/MonoExample/MonoExample/obj/Debug/MonoExample.pdb

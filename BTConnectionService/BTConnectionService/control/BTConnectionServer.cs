@@ -52,7 +52,7 @@ namespace BTConnectionService
                var bluetoothListener = new BluetoothListener(UUID);
                bluetoothListener.Start();
 
-               Log.write("Server socket initialized. Waiting...");
+               Log.write("Server socket initialized. Waiting for connection...");
                BluetoothClient connection = bluetoothListener.AcceptBluetoothClient();      
 
                Log.write("Connection established.");
