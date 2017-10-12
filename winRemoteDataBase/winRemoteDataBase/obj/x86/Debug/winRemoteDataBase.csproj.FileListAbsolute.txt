@@ -1,0 +1,11 @@
+c:\users\jgraves3\source\repos\winRemoteDataBase\winRemoteDataBase\obj\x86\Debug\winRemoteDataBase.csprojResolveAssemblyReference.cache
+c:\users\jgraves3\source\repos\winRemoteDataBase\winRemoteDataBase\obj\x86\Debug\App.g.i.cs
+c:\users\jgraves3\source\repos\winRemoteDataBase\winRemoteDataBase\obj\x86\Debug\App.g.cs
+c:\users\jgraves3\source\repos\winRemoteDataBase\winRemoteDataBase\obj\x86\Debug\MainPage.g.i.cs
+c:\users\jgraves3\source\repos\winRemoteDataBase\winRemoteDataBase\obj\x86\Debug\MainPage.g.cs
+c:\users\jgraves3\source\repos\winRemoteDataBase\winRemoteDataBase\obj\x86\Debug\XamlTypeInfo.g.cs
+c:\users\jgraves3\source\repos\winRemoteDataBase\winRemoteDataBase\obj\x86\Debug\App.xaml
+c:\users\jgraves3\source\repos\winRemoteDataBase\winRemoteDataBase\obj\x86\Debug\MainPage.xaml
+c:\users\jgraves3\source\repos\winRemoteDataBase\winRemoteDataBase\obj\x86\Debug\App.xbf
+c:\users\jgraves3\source\repos\winRemoteDataBase\winRemoteDataBase\obj\x86\Debug\MainPage.xbf
+c:\users\jgraves3\source\repos\winRemoteDataBase\winRemoteDataBase\obj\x86\Debug\XamlSaveStateFile.xml
