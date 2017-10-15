@@ -32,16 +32,20 @@ namespace BTConnectionService.control
 
         public static void Execute(WinAction action)
         {
+            Log.write("Executing action ID " + action.ID);
             // TODO remove this, it's hardcoded crap
             switch(action.ID)
             {
                 case 0:
+                    Log.write("Copy executed.");
                     Copy();
                     break;
                 case 1:
+                    Log.write("Paste executed.");
                     Paste();
                     break;
                 case 2:
+                    Log.write("Select all executed.");
                     SelectAll();
                     break;
             }

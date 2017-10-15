@@ -40,6 +40,7 @@ public class BTDataIO {
 
     public List<WinAction> getActionData()
     {
+        // TODO handle when server disconnects
         // TODO actually read data
         List<WinAction> dummyList = new ArrayList<>();
 
