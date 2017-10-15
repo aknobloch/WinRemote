@@ -45,7 +45,7 @@ public class BTDataIO {
 
         dummyList.add(new WinAction("Copy", 0));
         dummyList.add(new WinAction("Paste", 1));
-        dummyList.add(new WinAction("Task Manager", 2));
+        dummyList.add(new WinAction("Select All", 2));
 
         Debug.log("Retrieved " + dummyList.size() + " buttons from the server.");
         return dummyList;

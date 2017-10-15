@@ -9,7 +9,7 @@ namespace BTConnectionService.model
     public struct WinAction
     {
         public int ID;
-        public string name;
-        public string action;
+        public string Name;
+        public string Action;
     }
 }

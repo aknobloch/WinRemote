@@ -9,6 +9,7 @@ using InTheHand.Net.Sockets;
 using System.IO;
 using System.Threading;
 using BTConnectionService.control;
+using BTConnectionService.model;
 
 namespace BTConnectionService
 {
@@ -60,7 +61,8 @@ namespace BTConnectionService
 
                while (clientStream.CanRead())
                {
-                   clientStream.Read();
+                   WinAction sentAction = clientStream.Read();
+                   ExecuteAction.Execute(sentAction);
                }
 
                Log.write("End reading.");

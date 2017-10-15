@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BTConnectionService.model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,6 +28,25 @@ namespace BTConnectionService.control
         public static void AltTab()
         {
             SendKeys.SendWait("%({TAB})");
+        }
+
+        public static void Execute(WinAction action)
+        {
+            // TODO remove this, it's hardcoded crap
+            switch(action.ID)
+            {
+                case 0:
+                    Copy();
+                    break;
+                case 1:
+                    Paste();
+                    break;
+                case 2:
+                    SelectAll();
+                    break;
+            }
+
+            // Execute(action.Action); TODO
         }
 
         public static void Execute(string keyCommand)

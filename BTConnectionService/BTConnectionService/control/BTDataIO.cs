@@ -34,15 +34,16 @@ namespace BTConnectionService.control
         {
             WinAction data = new WinAction();
 
-            data.name = "TODO: Interface w/ database"; // TODO
-            data.action = "TODO: Interface w/ database";
-
             int nextByte = m_DataStream.ReadByte();
 
             if (nextByte != -1)
             {
                 Log.write("Read " + nextByte);
+                data.ID = nextByte;
             }
+
+            data.Name = "TODO: Interface w/ database"; // TODO
+            data.Action = "TODO: Interface w/ database";
 
             return data;
         }
