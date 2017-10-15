@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity
 
         // TODO user feedback while connection to server is being established
         initializeLayout();
-        beginServerConnection();
     }
 
     /**
@@ -90,7 +89,7 @@ public class MainActivity extends AppCompatActivity
         {
             case R.id.action_connect:
                 Device.showToast(this, "Attempting connection...");
-                getServerConnection();
+                beginServerConnection();
                 return true;
         }
 
