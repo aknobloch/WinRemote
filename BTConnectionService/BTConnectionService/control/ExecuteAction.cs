@@ -28,5 +28,10 @@ namespace BTConnectionService.control
         {
             SendKeys.SendWait("%({TAB})");
         }
+
+        public static void Execute(string keyCommand)
+        {
+            SendKeys.SendWait(keyCommand);
+        }
     }
 }
