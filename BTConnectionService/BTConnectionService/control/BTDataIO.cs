@@ -39,7 +39,7 @@ namespace BTConnectionService.control
             if (nextByte != -1)
             {
                 Log.write("Read " + nextByte);
-                data.ID = nextByte;
+                data.ID = Convert.ToInt32(nextByte);
             }
 
             data.Name = "TODO: Interface w/ database"; // TODO
