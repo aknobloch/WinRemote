@@ -3,41 +3,36 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.IO;
+using SQLite.Net;
+using SQLite.Net.Platform.Generic;
 
 namespace winRemoteDataBase.Controller
 {
     class DatabaseHelper
     {
+        private const string DB_PATH = "winremote_db.sqlite";
+
         //Create Table 
-        public void CreateDatabase(string DB_PATH)
+        public void CreateDatabase()
         {
-            if (!CheckFileExists(DB_PATH).Result)
+            if (File.Exists(DB_PATH))
             {
-                using (SQLite.Net.SQLiteConnection conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), DB_PATH))
-                {
-                    conn.CreateTable<Keycodes>();
-                    conn.CreateTable<Macros>();
-                    conn.CreateTable<Buttons>();
-                }
+                return;
             }
-        }
-        private async Task<bool> CheckFileExists(string fileName)
-        {
-            try
-            {
-                var store = await Windows.Storage.ApplicationData.Current.LocalFolder.GetFileAsync(fileName);
-                return true;
-            }
-            catch
-            {
-                return false;
+
+            using (SQLiteConnection conn = new SQLiteConnection(new SQLitePlatformGeneric(), DB_PATH))
+            { 
+                conn.CreateTable<Keycodes>();
+                conn.CreateTable<Macros>();
+                conn.CreateTable<Buttons>();
             }
         }
 
         // Insert the new keycode in the Keycodes table. 
         public void InsertKeycode(Keycodes keycode)
         {
-            using (SQLite.Net.SQLiteConnection conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), App.DB_PATH))
+            using (SQLiteConnection conn = new SQLiteConnection(new SQLitePlatformGeneric(), DB_PATH))
             {
                 conn.RunInTransaction(() =>
                 {
@@ -48,7 +43,7 @@ namespace winRemoteDataBase.Controller
         // Insert the new macro in the Macros table. 
         public void InsertMacro(Macros macro)
         {
-            using (SQLite.Net.SQLiteConnection conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), App.DB_PATH))
+            using (SQLiteConnection conn = new SQLiteConnection(new SQLitePlatformGeneric(), DB_PATH))
             {
                 conn.RunInTransaction(() =>
                 {
@@ -59,7 +54,7 @@ namespace winRemoteDataBase.Controller
         // Insert the new button in the Buttons table. 
         public void InsertButton(Buttons button)
         {
-            using (SQLite.Net.SQLiteConnection conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), App.DB_PATH))
+            using (SQLiteConnection conn = new SQLiteConnection(new SQLitePlatformGeneric(), DB_PATH))
             {
                 conn.RunInTransaction(() =>
                 {
@@ -71,7 +66,7 @@ namespace winRemoteDataBase.Controller
         // Retrieve the specific keycode from the database.   
         public Keycodes ReadKeycode(int keycodeId)
         {
-            using (SQLite.Net.SQLiteConnection conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), App.DB_PATH))
+            using (SQLiteConnection conn = new SQLiteConnection(new SQLitePlatformGeneric(), DB_PATH))
             {
                 // TODO 
                 var existingKeycode = conn.Query<Keycodes>("select * from Keycodes where kc_ID =" + keycodeId).FirstOrDefault();
@@ -81,7 +76,7 @@ namespace winRemoteDataBase.Controller
         // Retrieve the specific macro from the database.   
         public Macros ReadMacro(int macroId)
         {
-            using (SQLite.Net.SQLiteConnection conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), App.DB_PATH))
+            using (SQLiteConnection conn = new SQLiteConnection(new SQLitePlatformGeneric(), DB_PATH))
             {
                 var existingMacro = conn.Query<Macros>("select * from Macros where mc_ID =" + macroId).FirstOrDefault();
                 return existingMacro;
@@ -90,7 +85,7 @@ namespace winRemoteDataBase.Controller
         // Retrieve the specific button from the database.   
         public Buttons ReadButton(int buttonId)
         {
-            using (SQLite.Net.SQLiteConnection conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), App.DB_PATH))
+            using (SQLiteConnection conn = new SQLiteConnection(new SQLitePlatformGeneric(), DB_PATH))
             {
                 var existingButton = conn.Query<Buttons>("select * from Buttons where btn_ID =" + buttonId).FirstOrDefault();
                 return existingButton;
@@ -101,7 +96,7 @@ namespace winRemoteDataBase.Controller
         {
             try
             {
-                using (SQLite.Net.SQLiteConnection conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), App.DB_PATH))
+                using (SQLiteConnection conn = new SQLiteConnection(new SQLitePlatformGeneric(), DB_PATH))
                 {
                     List<Keycodes> myCollection = conn.Table<Keycodes>().ToList<Keycodes>();
                     ObservableCollection<Keycodes> keycodeList = new ObservableCollection<Keycodes>(myCollection);
@@ -118,7 +113,7 @@ namespace winRemoteDataBase.Controller
         {
             try
             {
-                using (SQLite.Net.SQLiteConnection conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), App.DB_PATH))
+                using (SQLiteConnection conn = new SQLiteConnection(new SQLitePlatformGeneric(), DB_PATH))
                 {
                     List<Macros> myCollection = conn.Table<Macros>().ToList<Macros>();
                     ObservableCollection<Macros> macroList = new ObservableCollection<Macros>(myCollection);
@@ -135,7 +130,7 @@ namespace winRemoteDataBase.Controller
         {
             try
             {
-                using (SQLite.Net.SQLiteConnection conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), App.DB_PATH))
+                using (SQLiteConnection conn = new SQLiteConnection(new SQLitePlatformGeneric(), DB_PATH))
                 {
                     List<Buttons> myCollection = conn.Table<Buttons>().ToList<Buttons>();
                     ObservableCollection<Buttons> buttonList = new ObservableCollection<Buttons>(myCollection);
@@ -151,7 +146,7 @@ namespace winRemoteDataBase.Controller
         //Update existing keycode 
         public void UpdateDetails(Keycodes keycode)
         {
-            using (SQLite.Net.SQLiteConnection conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), App.DB_PATH))
+            using (SQLiteConnection conn = new SQLiteConnection(new SQLitePlatformGeneric(), DB_PATH))
             {
 
                 var existingKeycode = conn.Query<Keycodes>("select * from Keycodes where kc_ID =" + keycode.kc_ID).FirstOrDefault();
@@ -169,7 +164,7 @@ namespace winRemoteDataBase.Controller
         //Update existing macro 
         public void UpdateDetails(Macros macro)
         {
-            using (SQLite.Net.SQLiteConnection conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), App.DB_PATH))
+            using (SQLiteConnection conn = new SQLiteConnection(new SQLitePlatformGeneric(), DB_PATH))
             {
 
                 var existingconact = conn.Query<Macros>("select * from Macros where mc_ID =" + macro.mc_ID).FirstOrDefault();
@@ -187,7 +182,7 @@ namespace winRemoteDataBase.Controller
         //Update existing button 
         public void UpdateDetails(Buttons button)
         {
-            using (SQLite.Net.SQLiteConnection conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), App.DB_PATH))
+            using (SQLiteConnection conn = new SQLiteConnection(new SQLitePlatformGeneric(), DB_PATH))
             {
 
                 var existingconact = conn.Query<Buttons>("select * from Buttons where btn_ID =" + button.btn_ID).FirstOrDefault();
@@ -206,7 +201,7 @@ namespace winRemoteDataBase.Controller
         //Delete specific keycode   
         public void DeleteKeycode(int id)
         {
-            using (SQLite.Net.SQLiteConnection conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), App.DB_PATH))
+            using (SQLiteConnection conn = new SQLiteConnection(new SQLitePlatformGeneric(), DB_PATH))
             {
 
                 var existingKeycode = conn.Query<Keycodes>("select * from Keycodes where kc_ID =" + id).FirstOrDefault();
@@ -222,7 +217,7 @@ namespace winRemoteDataBase.Controller
         //Delete specific macro   
         public void DeleteMacro(int id)
         {
-            using (SQLite.Net.SQLiteConnection conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), App.DB_PATH))
+            using (SQLiteConnection conn = new SQLiteConnection(new SQLitePlatformGeneric(), DB_PATH))
             {
 
                 var existingMacro = conn.Query<Macros>("select * from Macros where mc_ID =" + id).FirstOrDefault();
@@ -238,7 +233,7 @@ namespace winRemoteDataBase.Controller
         //Delete specific button   
         public void DeleteButton(int id)
         {
-            using (SQLite.Net.SQLiteConnection conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), App.DB_PATH))
+            using (SQLiteConnection conn = new SQLiteConnection(new SQLitePlatformGeneric(), DB_PATH))
             {
                 var existingButton = conn.Query<Buttons>("select * from Buttons where btn_ID =" + id).FirstOrDefault();
                 if (existingButton != null)
@@ -254,7 +249,7 @@ namespace winRemoteDataBase.Controller
         //Delete Keycodes table   
         public void DeleteAllKeycode()
         {
-            using (SQLite.Net.SQLiteConnection conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), App.DB_PATH))
+            using (SQLiteConnection conn = new SQLiteConnection(new SQLitePlatformGeneric(), DB_PATH))
             {
 
                 conn.DropTable<Keycodes>();
@@ -267,7 +262,7 @@ namespace winRemoteDataBase.Controller
         //Delete Macros table   
         public void DeleteAllMacro()
         {
-            using (SQLite.Net.SQLiteConnection conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), App.DB_PATH))
+            using (SQLiteConnection conn = new SQLiteConnection(new SQLitePlatformGeneric(), DB_PATH))
             {
 
                 conn.DropTable<Macros>();
@@ -280,7 +275,7 @@ namespace winRemoteDataBase.Controller
         //Delete Buttons table   
         public void DeleteAllButton()
         {
-            using (SQLite.Net.SQLiteConnection conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), App.DB_PATH))
+            using (SQLiteConnection conn = new SQLiteConnection(new SQLitePlatformGeneric(), DB_PATH))
             {
 
                 conn.DropTable<Buttons>();
