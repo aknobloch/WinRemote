@@ -19,6 +19,8 @@ DisabledTech
 
 * [Android Studio](https://developer.android.com/studio/index.html) - One of the development environments used
 * [Visual Studio](https://www.visualstudio.com/) - One of the development environments used
+* [SQLite](https://www.sqlite.org/) - One of the technologies used
+* [Bluetooth](https://www.bluetooth.com/) - One of the technologies used
 * [C#](https://docs.microsoft.com/en-us/dotnet/csharp/csharp) - One of the languages used
 * [JAVA](http://docs.oracle.com/javase/8/) - One of the languages used
 * More to come!
@@ -46,6 +48,7 @@ It's currently 2017 and there are so many amazing keyboard shortcuts to make our
 ## What can it do (we could put features or changes here?)
 
 * version 0.0.0 - Nothing yet unfortunately, we haven’t started... :(
+* version 0.0.1 - The app can now send pre programmed commands to the active window
 
 ## Getting Started
 
