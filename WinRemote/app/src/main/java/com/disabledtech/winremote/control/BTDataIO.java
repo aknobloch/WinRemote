@@ -44,9 +44,9 @@ public class BTDataIO {
         // TODO actually read data
         List<WinAction> dummyList = new ArrayList<>();
 
-        dummyList.add(new WinAction("Copy", 0));
-        dummyList.add(new WinAction("Paste", 1));
-        dummyList.add(new WinAction("Select All", 2));
+        dummyList.add(new WinAction("Copy", 1));
+        dummyList.add(new WinAction("Paste", 2));
+        dummyList.add(new WinAction("Select All", 3));
 
         Debug.log("Retrieved " + dummyList.size() + " buttons from the server.");
         return dummyList;
