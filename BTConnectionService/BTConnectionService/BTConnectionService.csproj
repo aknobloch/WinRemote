@@ -64,12 +64,11 @@
   <ItemGroup>
     <Compile Include="control\BTConnectionServer.cs" />
     <Compile Include="control\BTDataIO.cs" />
-    <Compile Include="control\DatabaseHelper.cs" />
+    <Compile Include="control\DBHelper.cs" />
     <Compile Include="control\ExecuteAction.cs" />
-    <Compile Include="model\Buttons.cs" />
-    <Compile Include="model\KeyCodes.cs" />
-    <Compile Include="model\Macros.cs" />
-    <Compile Include="model\WinAction.cs" />
+    <Compile Include="model\DBButton.cs" />
+    <Compile Include="model\DBKeyCode.cs" />
+    <Compile Include="model\DBMacro.cs" />
     <Compile Include="utils\Log.cs" />
     <Compile Include="view\Start.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

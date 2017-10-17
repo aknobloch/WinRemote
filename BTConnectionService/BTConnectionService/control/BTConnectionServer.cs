@@ -9,7 +9,6 @@ using InTheHand.Net.Sockets;
 using System.IO;
 using System.Threading;
 using BTConnectionService.control;
-using BTConnectionService.model;
 
 namespace BTConnectionService
 {
@@ -38,11 +37,16 @@ namespace BTConnectionService
 
             while (clientStream.CanRead())
             {
-                WinAction sentAction = clientStream.Read();
-                if (sentAction.ID >= 0)
+                List<string> sentAction = clientStream.Read();
+
+                if (sentAction.Count > 0) // TODO greater than 0
                 {
                     Log.write("Valid button ID read.");
-                    ExecuteAction.Execute(sentAction);
+
+                    foreach (string action in sentAction)
+                    {
+                        ExecuteAction.Execute(action);
+                    }
                 }
             }
 
@@ -67,11 +71,16 @@ namespace BTConnectionService
 
                while (clientStream.CanRead())
                {
-                   WinAction sentAction = clientStream.Read();
-                   if(sentAction.ID >= 0)
+                   List<string> sentAction = clientStream.Read();
+
+                   if(sentAction.Count > 0) // TODO greater than 0
                    {
                        Log.write("Valid button ID read.");
-                       ExecuteAction.Execute(sentAction);
+                       
+                       foreach(string action in sentAction)
+                       {
+                           ExecuteAction.Execute(action);
+                       }
                    }
                }
 

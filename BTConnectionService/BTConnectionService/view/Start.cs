@@ -34,14 +34,24 @@ namespace BTConnectionService
             Console.ReadLine();
             */
 
-            DatabaseHelper helper = new DatabaseHelper();
-            helper.CreateDatabase();
+            /*
+            DBButton copy = new DBButton(3, "Select All");
+            DBMacro macro = new DBMacro(3, 1, 1);
+            DBKeyCode key = new DBKeyCode("^a", "Select All", true);
 
-            Buttons button = new Buttons();
-            button.btn_Description = "Test Button!";
+            DBHelper.InsertButton(copy);
+            DBHelper.InsertMacro(macro);
+            DBHelper.InsertKeycode(key);
+            */
 
-            helper.InsertButton(button);
-
+            var commands = DBHelper.GetActions(1);
+            foreach(string c in commands)
+            {
+                Console.WriteLine(commands);
+            }
+            
+            Console.ReadLine();
+            
         }
     }
 }
