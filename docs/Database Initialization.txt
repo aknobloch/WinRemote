@@ -1,0 +1,23 @@
+DBButton copy = new DBButton(3, "Select All");
+            DBMacro macro = new DBMacro(3, 1, 1);
+            DBKeyCode key = new DBKeyCode("^a", "Select All", true);
+
+            DBHelper.InsertButton(copy);
+            DBHelper.InsertMacro(macro);
+            DBHelper.InsertKeycode(key);
+
+DBButton copy = new DBButton(2, "Paste");
+            DBMacro macro = new DBMacro(2, 1, 1);
+            DBKeyCode key = new DBKeyCode("^v", "Paste", true);
+
+            DBHelper.InsertButton(copy);
+            DBHelper.InsertMacro(macro);
+            DBHelper.InsertKeycode(key);
+
+DBButton copy = new DBButton(1, "Copy");
+            DBMacro macro = new DBMacro(1, 1, 1);
+            DBKeyCode key = new DBKeyCode("^c", "Copy", true);
+
+            DBHelper.InsertButton(copy);
+            DBHelper.InsertMacro(macro);
+            DBHelper.InsertKeycode(key);

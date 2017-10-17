@@ -55,8 +55,8 @@ namespace winRemoteDataBase.Controller
             using (SQLiteConnection conn = new SQLiteConnection(new SQLitePlatformGeneric(), DB_PATH))
             {
                 string keycodeQuery = "SELECT kc_Value FROM DBKeyCode " +
-                    "LEFT JOIN DBMacro ON DBKeyCode.kc_ID = DBMacro.mc_kc_ID" +
-                    "LEFT JOIN DBButton ON DBButton.btn_mc_ID = DBMacro.mc_ID" +
+                    "LEFT JOIN DBMacro ON DBKeyCode.kc_ID = DBMacro.mc_kc_ID " +
+                    "LEFT JOIN DBButton ON DBButton.btn_mc_ID = DBMacro.mc_ID " +
                     "WHERE DBButton.btn_ID = " + buttonPressed.btn_ID;
 
                 List<DBKeyCode> dbKeycodes = conn.Query<DBKeyCode>(keycodeQuery);

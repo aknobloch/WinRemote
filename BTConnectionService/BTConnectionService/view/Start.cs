@@ -19,7 +19,7 @@ namespace BTConnectionService
 
         static void Main(string[] args)
         {
-            /*
+            
             if(Log.DEBUG_MODE == false)
             {
                 #pragma warning disable CS0162 // Unreachable code detected
@@ -32,26 +32,6 @@ namespace BTConnectionService
 
             new BTConnectionServer().StartAsynchronousServer();
             Console.ReadLine();
-            */
-
-            /*
-            DBButton copy = new DBButton(3, "Select All");
-            DBMacro macro = new DBMacro(3, 1, 1);
-            DBKeyCode key = new DBKeyCode("^a", "Select All", true);
-
-            DBHelper.InsertButton(copy);
-            DBHelper.InsertMacro(macro);
-            DBHelper.InsertKeycode(key);
-            */
-
-            var commands = DBHelper.GetActions(1);
-            foreach(string c in commands)
-            {
-                Console.WriteLine(commands);
-            }
-            
-            Console.ReadLine();
-            
         }
     }
 }
