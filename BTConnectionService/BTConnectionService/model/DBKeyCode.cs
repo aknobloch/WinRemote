@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace winRemoteDataBase.Model
 {
-    public class Keycodes
+    public class DBKeyCode
     {
         //The Id property is marked as the Primary Key
         [SQLite.Net.Attributes.PrimaryKey, SQLite.Net.Attributes.AutoIncrement]
@@ -14,11 +14,13 @@ namespace winRemoteDataBase.Model
         public string kc_Value { get; set; }
         public string kc_Description { get; set; }
         public bool kc_Switch { get; set; }
-        public Keycodes()
+
+        public DBKeyCode()
         {
 
         }
-        public Keycodes(string kc_Value, string kc_Description, bool kc_Switch)
+
+        public DBKeyCode(string kc_Value, string kc_Description, bool kc_Switch)
         {
             this.kc_Value = kc_Value;
             this.kc_Description = kc_Description;

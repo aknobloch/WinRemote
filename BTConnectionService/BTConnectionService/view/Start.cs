@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Runtime.InteropServices;
+using winRemoteDataBase.Controller;
+using winRemoteDataBase.Model;
 
 namespace BTConnectionService
 {
@@ -17,6 +19,7 @@ namespace BTConnectionService
 
         static void Main(string[] args)
         {
+            
             if(Log.DEBUG_MODE == false)
             {
                 #pragma warning disable CS0162 // Unreachable code detected

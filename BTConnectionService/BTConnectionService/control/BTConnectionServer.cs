@@ -21,6 +21,7 @@ namespace BTConnectionService
 
         }
 
+        [System.Obsolete("Asynchronous server is deprecated, use the StartSynchronousServer method.")]
         public void StartAsynchronousServer()
         {
             Log.write("Initializing server w/ UUID: " + UUID.ToString());
@@ -36,7 +37,17 @@ namespace BTConnectionService
 
             while (clientStream.CanRead())
             {
-                clientStream.Read();
+                List<string> sentAction = clientStream.Read();
+
+                if (sentAction.Count > 0) // TODO greater than 0
+                {
+                    Log.write("Valid button ID read.");
+
+                    foreach (string action in sentAction)
+                    {
+                        ExecuteAction.Execute(action);
+                    }
+                }
             }
 
             Log.write("End reading.");
@@ -60,7 +71,17 @@ namespace BTConnectionService
 
                while (clientStream.CanRead())
                {
-                   clientStream.Read();
+                   List<string> sentAction = clientStream.Read();
+
+                   if(sentAction.Count > 0) // TODO greater than 0
+                   {
+                       Log.write("Valid button ID read.");
+                       
+                       foreach(string action in sentAction)
+                       {
+                           ExecuteAction.Execute(action);
+                       }
+                   }
                }
 
                Log.write("End reading.");

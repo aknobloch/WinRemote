@@ -1,10 +1,11 @@
-﻿using BTConnectionService.model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using winRemoteDataBase.Controller;
+using winRemoteDataBase.Model;
 
 namespace BTConnectionService.control
 {
@@ -29,22 +30,21 @@ namespace BTConnectionService.control
         /// is read in from the stream.
         /// </summary>
         /// 
-        /// <returns>WinAction with the data read from the server</returns>
-        public WinAction Read()
+        /// <returns>List<string> with the execution commands read from the server</returns>
+        public List<string> Read()
         {
-            WinAction data = new WinAction();
-
-            data.name = "TODO: Interface w/ database"; // TODO
-            data.action = "TODO: Interface w/ database";
-
             int nextByte = m_DataStream.ReadByte();
+
+            List<string> commands = new List<string>();
 
             if (nextByte != -1)
             {
                 Log.write("Read " + nextByte);
+                int buttonID = Convert.ToInt32(nextByte);
+                commands = DBHelper.GetActions(buttonID);
             }
 
-            return data;
+            return commands;
         }
     }
 }

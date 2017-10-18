@@ -6,18 +6,20 @@ using System.Threading.Tasks;
 
 namespace winRemoteDataBase.Model
 {
-    public class Buttons
+    public class DBButton
     {
         //The Id property is marked as the Primary Key
         [SQLite.Net.Attributes.PrimaryKey, SQLite.Net.Attributes.AutoIncrement]
         public int btn_ID { get; set; }
-        public string btn_mc_ID { get; set; }
+        public int btn_mc_ID { get; set; }
         public string btn_Description { get; set; }
-        public Buttons()
+
+        public DBButton()
         {
 
         }
-        public Buttons(string btn_mc_ID, string btn_Description)
+
+        public DBButton(int btn_mc_ID, string btn_Description)
         {
             this.btn_mc_ID = btn_mc_ID;
             this.btn_Description = btn_Description;
