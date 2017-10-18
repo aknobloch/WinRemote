@@ -13,11 +13,12 @@ public class Debug // TODO rename to log
 	/**
 	 * Logs the given message under the Debug flag. The tag used for this message will be
 	 * the class name of the caller with the line number appended.
+	 *
 	 * @param message
 	 */
 	public static void log(String message)
 	{
-		if(DEBUG_MODE == false)
+		if (DEBUG_MODE == false)
 		{
 			return;
 		}
@@ -31,31 +32,33 @@ public class Debug // TODO rename to log
 		log(className + " (" + stackTrace.getLineNumber() + ")", message);
 	}
 
-    /**
-     * Logs the given message under the Error flag. The tag used for this message will be
-     * the class name of the caller with the line number appended. The debug state
-     * of this app will be ignored.
-     * @param message
-     */
-    public static void logError(String message)
-    {
-        StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
-        StackTraceElement stackTrace = stackTraceElements[3];
+	/**
+	 * Logs the given message under the Error flag. The tag used for this message will be
+	 * the class name of the caller with the line number appended. The debug state
+	 * of this app will be ignored.
+	 *
+	 * @param message
+	 */
+	public static void logError(String message)
+	{
+		StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+		StackTraceElement stackTrace = stackTraceElements[3];
 
-        String className = stackTrace.getClassName()
-                .substring(stackTrace.getClassName().lastIndexOf('.') + 1);
+		String className = stackTrace.getClassName()
+				.substring(stackTrace.getClassName().lastIndexOf('.') + 1);
 
-        logError(className + " (" + stackTrace.getLineNumber() + ")", message);
-    }
+		logError(className + " (" + stackTrace.getLineNumber() + ")", message);
+	}
 
 	/**
 	 * Logs the given tag and message under the Debug flag.
+	 *
 	 * @param tag
 	 * @param message
 	 */
 	public static void log(String tag, String message)
 	{
-		if(DEBUG_MODE == false)
+		if (DEBUG_MODE == false)
 		{
 			return;
 		}
@@ -65,7 +68,8 @@ public class Debug // TODO rename to log
 
 	/**
 	 * Logs the given tag and message under the Error flag.
-     * The debug state of the application will be ignored.
+	 * The debug state of the application will be ignored.
+	 *
 	 * @param tag
 	 * @param message
 	 */

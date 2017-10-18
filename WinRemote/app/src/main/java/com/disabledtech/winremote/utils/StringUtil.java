@@ -16,17 +16,17 @@ public class StringUtil
 	 */
 	public static boolean equals(String firstString, String secondString)
 	{
-		if(firstString == null && secondString == null)
+		if (firstString == null && secondString == null)
 		{
 			return true;
 		}
 
-		if(firstString == null)
+		if (firstString == null)
 		{
 			return false;
 		}
 
-		if(secondString == null)
+		if (secondString == null)
 		{
 			return false;
 		}
@@ -79,7 +79,7 @@ public class StringUtil
 			return -1;
 		}
 
-		if(secondString == null)
+		if (secondString == null)
 		{
 			return 1;
 		}
@@ -96,7 +96,7 @@ public class StringUtil
 	 */
 	public static String toLowerCase(String firstString)
 	{
-		if(firstString == null)
+		if (firstString == null)
 		{
 			return null;
 		}
