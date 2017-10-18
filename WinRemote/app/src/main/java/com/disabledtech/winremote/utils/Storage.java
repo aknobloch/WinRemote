@@ -15,6 +15,7 @@ public class Storage
 {
 	/**
 	 * Save the given boolean value with the associated key.
+	 *
 	 * @param appContext
 	 * @param key
 	 * @param value
@@ -42,7 +43,7 @@ public class Storage
 	{
 		SharedPreferences sharedPrefs = appContext.getSharedPreferences(key, Context.MODE_PRIVATE);
 
-		if(sharedPrefs.contains(key) == false)
+		if (sharedPrefs.contains(key) == false)
 		{
 			throw new FileNotFoundException("Shared preference with key " + key + " doesn't exist.");
 		}
@@ -52,6 +53,7 @@ public class Storage
 
 	/**
 	 * Saves the given Set with the associated key.
+	 *
 	 * @param appContext
 	 * @param key
 	 * @param selectedAppsPackageNames
@@ -68,6 +70,7 @@ public class Storage
 	/**
 	 * Fetches and returns the String set from memory. If
 	 * no set is found, returns an empty set instead. This is a blocking call.
+	 *
 	 * @return
 	 */
 	public static HashSet<String> getStringSet(Context appContext, String key)
@@ -95,7 +98,7 @@ public class Storage
 	{
 		File cacheDir = getLogDirectory(context);
 
-		for(File logFile : cacheDir.listFiles())
+		for (File logFile : cacheDir.listFiles())
 		{
 			logFile.delete();
 		}
