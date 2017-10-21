@@ -16,6 +16,7 @@ public class Device
 
 	/**
 	 * Vibrates the device for the indicated period of time (in milliseconds)
+	 *
 	 * @param appContext
 	 * @param time
 	 */
@@ -23,13 +24,14 @@ public class Device
 	{
 		Vibrator vibrator = (Vibrator) appContext.getSystemService(Context.VIBRATOR_SERVICE);
 
-		if(vibrator == null) return;
+		if (vibrator == null) return;
 
 		vibrator.vibrate(time);
 	}
 
 	/**
 	 * Toasts the given message for the Toast.SHORT period of time.
+	 *
 	 * @param appContext
 	 * @param message
 	 */
@@ -39,9 +41,10 @@ public class Device
 		toast.show();
 	}
 
-	public static boolean hasBluetoothPermissions(Context appContext) {
+	public static boolean hasBluetoothPermissions(Context appContext)
+	{
 
-		if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.M)
+		if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M)
 		{
 			return true; // earlier than marshmallow have implicit access through manifest
 		}
