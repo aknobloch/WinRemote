@@ -27,7 +27,6 @@ import static com.disabledtech.winremote.interfaces.IServerConnectionListener.SE
  */
 public class BTConnectionClient extends BroadcastReceiver
 {
-
 	private final String SERVER_ID = "2BBF4D1B-9A19-4709-9399-B6AB4A88E777";
 	private final UUID SERVER_UUID = UUID.fromString(SERVER_ID);
 
@@ -38,9 +37,8 @@ public class BTConnectionClient extends BroadcastReceiver
 
 	public BTConnectionClient()
 	{
+		// empty constructor necessary for broadcast receiver
 	}
-
-	;
 
 	/**
 	 * Initializes the bluetooth adapter and enables it
@@ -69,7 +67,6 @@ public class BTConnectionClient extends BroadcastReceiver
 	 */
 	private void registerBroadcastEvents(Context context)
 	{
-
 		IntentFilter broadcastEventFilter = new IntentFilter();
 		broadcastEventFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
 		broadcastEventFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
@@ -87,8 +84,6 @@ public class BTConnectionClient extends BroadcastReceiver
 	 */
 	private boolean initializeBluetooth()
 	{
-
-		// FIXME: this might require different configs for < JELLY_BEAN_MR2, but the docs are contradictory. Revisit w/ emulator
 		m_BluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
 		if (m_BluetoothAdapter == null)
@@ -116,14 +111,25 @@ public class BTConnectionClient extends BroadcastReceiver
 		m_NearbyDevices = new ArrayList<>();
 
 		Set<BluetoothDevice> bondedDevices = m_BluetoothAdapter.getBondedDevices();
+
+		// TODO: asynchronous
 		for(BluetoothDevice device : bondedDevices)
 		{
 			Debug.log("Bonded device " + device.getName() + " found.");
-			// TODO check cached UUID data first
-			m_NearbyDevices.add(device);
-			device.fetchUuidsWithSdp(); // resumed in handleFetchUUIDResponse
-//			device.createInsecureRfcommSocketToServiceRecord(SERVER_UUID); TODO
+
+			try
+			{
+				connectToServerAndNotify(device);
+				Debug.log("Successfully paired with " + device.getName());
+				return;
+			}
+			catch (IOException e) {} // if failed, just try next bonded device
 		}
+
+		// If the connectToServerAndNotify method failed for all
+		// bonded devices, notify callback, because polling should
+		// be called next.
+		m_ConnectionCallbackListener.notifyRecoverableFailure(R_SERVER_NOT_BONDED);
 	}
 
 	/**
@@ -311,7 +317,6 @@ public class BTConnectionClient extends BroadcastReceiver
 	 */
 	private void connectToServerAndNotify(BluetoothDevice server) throws IOException
 	{
-
 		BluetoothSocket socketConnection =
 				server.createInsecureRfcommSocketToServiceRecord(SERVER_UUID); // TODO secure
 
