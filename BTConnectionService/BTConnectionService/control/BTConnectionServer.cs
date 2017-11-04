@@ -21,8 +21,8 @@ namespace BTConnectionService
 
         }
 
-        [System.Obsolete("Asynchronous server is deprecated, use the StartSynchronousServer method.")]
-        public void StartAsynchronousServer()
+        [System.Obsolete("Synchronous server is deprecated, use the StartAsynchronousServer method.")]
+        public void StartSynchronousServer()
         {
             Log.write("Initializing server w/ UUID: " + UUID.ToString());
 
@@ -53,7 +53,7 @@ namespace BTConnectionService
             Log.write("End reading.");
         }
 
-        public void StartSynchronousServer()
+        public void StartAsynchronousServer()
         {
             // TODO SDP discovery not successful in background thread.
             Thread serverThread = new Thread(() =>
@@ -73,7 +73,7 @@ namespace BTConnectionService
                {
                    List<string> sentAction = clientStream.Read();
 
-                   if(sentAction.Count > 0) // TODO greater than 0
+                   if(sentAction.Count > 0)
                    {
                        Log.write("Valid button ID read.");
                        
