@@ -121,6 +121,7 @@ public class BTConnectionClient extends BroadcastReceiver
 			{
 				connectToServerAndNotify(device);
 				Debug.log("Successfully paired with " + device.getName());
+				m_ActivelySearching = false;
 				return;
 			}
 			catch (IOException e) {} // if failed, just try next bonded device
@@ -130,6 +131,7 @@ public class BTConnectionClient extends BroadcastReceiver
 		// bonded devices, notify callback, because polling should
 		// be called next.
 		m_ConnectionCallbackListener.notifyRecoverableFailure(R_SERVER_NOT_BONDED);
+		m_ActivelySearching = false;
 	}
 
 	/**
