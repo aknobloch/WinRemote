@@ -20,8 +20,7 @@ namespace BTConnectionService
         {
 
         }
-
-        [System.Obsolete("Synchronous server is deprecated, use the StartAsynchronousServer method.")]
+        
         public void StartSynchronousServer()
         {
             Log.write("Initializing server w/ UUID: " + UUID.ToString());
@@ -51,44 +50,6 @@ namespace BTConnectionService
             }
 
             Log.write("End reading.");
-        }
-
-        public void StartAsynchronousServer()
-        {
-            // TODO SDP discovery not successful in background thread.
-            Thread serverThread = new Thread(() =>
-           {
-               Log.write("Initializing server w/ UUID: " + UUID.ToString());
-
-               var bluetoothListener = new BluetoothListener(UUID);
-               bluetoothListener.Start();
-
-               Log.write("Server socket initialized. Waiting for connection...");
-               BluetoothClient connection = bluetoothListener.AcceptBluetoothClient();      
-
-               Log.write("Connection established.");
-               BTDataIO clientStream = new BTDataIO(connection.GetStream());
-
-               while (clientStream.CanRead())
-               {
-                   List<string> sentAction = clientStream.Read();
-
-                   if(sentAction.Count > 0)
-                   {
-                       Log.write("Valid button ID read.");
-                       
-                       foreach(string action in sentAction)
-                       {
-                           ExecuteAction.Execute(action);
-                       }
-                   }
-               }
-
-               Log.write("End reading.");
-           });
-
-            serverThread.IsBackground = false;
-            serverThread.Start();
         }
     }
 }
