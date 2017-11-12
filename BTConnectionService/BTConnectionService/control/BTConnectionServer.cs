@@ -15,6 +15,7 @@ namespace BTConnectionService
     public class BTConnectionServer
     {
         static readonly Guid UUID = new Guid("{2BBF4D1B-9A19-4709-9399-B6AB4A88E777}");
+        static bool m_ServerRunning = true;
 
         public BTConnectionServer()
         {
@@ -28,28 +29,41 @@ namespace BTConnectionService
             var bluetoothListener = new BluetoothListener(UUID);
             bluetoothListener.Start();
 
-            Log.write("Server socket initialized. Waiting...");
-            BluetoothClient connection = bluetoothListener.AcceptBluetoothClient();
+            Log.write("Server socket initialized.");
 
-            Log.write("Connection established.");
-            BTDataIO clientStream = new BTDataIO(connection.GetStream());
-
-            while (clientStream.CanRead())
+            while (m_ServerRunning)
             {
-                List<string> sentAction = clientStream.Read();
+                Log.write("Waiting for connection...");
+                BluetoothClient connection = bluetoothListener.AcceptBluetoothClient();
 
-                if (sentAction.Count > 0) // TODO greater than 0
+                Log.write("Connection established.");
+                BTDataIO clientStream = new BTDataIO(connection.GetStream());
+                
+                while (clientStream.CanRead())
                 {
-                    Log.write("Valid button ID read.");
-
-                    foreach (string action in sentAction)
-                    {
-                        ExecuteAction.Execute(action);
-                    }
+                    ReadAndExecuteNextActions(clientStream);
                 }
             }
+            
+            Log.write("Server closed.");
+        }
 
-            Log.write("End reading.");
+        /// <summary>
+        /// Reads the next set of actions from the given stream, then sends them to the 
+        /// ExecuteAction utility to be executed.
+        /// </summary>
+        /// <param name="clientStream"></param>
+        private void ReadAndExecuteNextActions(BTDataIO clientStream)
+        {
+            List<string> sentAction = clientStream.Read();
+
+            if (sentAction.Count > 0) // TODO greater than 0
+            {
+                foreach (string action in sentAction)
+                {
+                    ExecuteAction.Execute(action);
+                }
+            }
         }
     }
 }
