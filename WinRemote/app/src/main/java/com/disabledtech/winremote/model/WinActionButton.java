@@ -27,6 +27,9 @@ public class WinActionButton extends android.support.v7.widget.AppCompatButton
 		return (String) this.getText();
 	}
 
+	/**
+	 * @return the unique database ID for the action associated with this button.
+	 */
 	public int getActionID()
 	{
 		return m_Action.getID();
