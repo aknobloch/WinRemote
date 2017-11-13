@@ -68,6 +68,7 @@
     <Compile Include="model\DBButton.cs" />
     <Compile Include="model\DBKeyCode.cs" />
     <Compile Include="model\DBMacro.cs" />
+    <Compile Include="utils\KeySend.cs" />
     <Compile Include="utils\Log.cs" />
     <Compile Include="view\Start.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
