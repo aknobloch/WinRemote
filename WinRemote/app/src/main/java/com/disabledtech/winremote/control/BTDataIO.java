@@ -8,7 +8,6 @@ import com.disabledtech.winremote.utils.Debug;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,9 +21,9 @@ import java.util.List;
 public class BTDataIO
 {
 
-	private Socket m_ServerSocket;
+	private BluetoothSocket m_ServerSocket;
 
-	public BTDataIO(Socket serverSocket)
+	public BTDataIO(BluetoothSocket serverSocket)
 	{
 		m_ServerSocket = serverSocket;
 	}
