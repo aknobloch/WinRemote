@@ -28,7 +28,7 @@ namespace BTConnectionService
                 #pragma warning restore CS0162 // Unreachable code detected
             }
 
-            new BTConnectionServer().StartAsynchronousServer();
+            new BTConnectionServer().StartSynchronousServer();
             Console.ReadLine();
         }
     }

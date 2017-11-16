@@ -30,9 +30,14 @@ public interface IServerConnectionListener
 		 */
 		R_SOCKET_CONNECTION_FAILED,
 		/**
-		 * Indicates the server could not be found. 
+		 * Indicates the server could not be found.
 		 */
-		R_SERVER_NOT_FOUND;
+		R_SERVER_NOT_FOUND,
+		/**
+		 * Indicates that the server is not already
+		 * paired to the device.
+		 */
+		R_SERVER_NOT_BONDED;
 	}
 
 	/**

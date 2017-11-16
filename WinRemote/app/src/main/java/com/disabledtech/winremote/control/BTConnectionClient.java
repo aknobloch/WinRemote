@@ -10,11 +10,13 @@ import android.content.IntentFilter;
 import android.os.Parcelable;
 
 import com.disabledtech.winremote.interfaces.IServerConnectionListener;
+import com.disabledtech.winremote.interfaces.IBondedConnectorListener;
 import com.disabledtech.winremote.utils.Debug;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import static com.disabledtech.winremote.interfaces.IServerConnectionListener.SERVER_ERROR_CODE.*;
@@ -24,22 +26,21 @@ import static com.disabledtech.winremote.interfaces.IServerConnectionListener.SE
  * This class explicitly connects to a pre-processed UUID, using the
  * RFCOMM protocol and a SDP lookup of said UUID.
  */
-public class BTConnectionClient extends BroadcastReceiver
+public class BTConnectionClient extends BroadcastReceiver implements IBondedConnectorListener
 {
-
-	private final String SERVER_ID = "2BBF4D1B-9A19-4709-9399-B6AB4A88E777";
-	private final UUID SERVER_UUID = UUID.fromString(SERVER_ID);
+	public static final String SERVER_ID = "2BBF4D1B-9A19-4709-9399-B6AB4A88E777";
+	public static final UUID SERVER_UUID = UUID.fromString(SERVER_ID);
 
 	private BluetoothAdapter m_BluetoothAdapter;
 	private IServerConnectionListener m_ConnectionCallbackListener;
 	private List<BluetoothDevice> m_NearbyDevices;
 	private boolean m_ActivelySearching;
 
+	@Deprecated
 	public BTConnectionClient()
 	{
+		// empty constructor necessary for broadcast receiver
 	}
-
-	;
 
 	/**
 	 * Initializes the bluetooth adapter and enables it
@@ -48,7 +49,6 @@ public class BTConnectionClient extends BroadcastReceiver
 	 */
 	public BTConnectionClient(Context context, IServerConnectionListener listener)
 	{
-
 		m_ConnectionCallbackListener = listener;
 		m_ActivelySearching = false;
 
@@ -69,7 +69,6 @@ public class BTConnectionClient extends BroadcastReceiver
 	 */
 	private void registerBroadcastEvents(Context context)
 	{
-
 		IntentFilter broadcastEventFilter = new IntentFilter();
 		broadcastEventFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
 		broadcastEventFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
@@ -87,8 +86,6 @@ public class BTConnectionClient extends BroadcastReceiver
 	 */
 	private boolean initializeBluetooth()
 	{
-
-		// FIXME: this might require different configs for < JELLY_BEAN_MR2, but the docs are contradictory. Revisit w/ emulator
 		m_BluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
 		if (m_BluetoothAdapter == null)
@@ -100,23 +97,55 @@ public class BTConnectionClient extends BroadcastReceiver
 	}
 
 	/**
+	 * Attempts to connect to the server using already paired (bonded)
+	 * devices. If the server is not already paired, this method will
+	 * notify the callback via {@link com.disabledtech.winremote.interfaces.IServerConnectionListener.SERVER_ERROR_CODE#R_SERVER_NOT_BONDED}
+	 */
+	public void attemptBondedConnection()
+	{
+		if (m_BluetoothAdapter.isDiscovering() || m_ActivelySearching)
+		{
+			m_ActivelySearching = false;
+			m_BluetoothAdapter.cancelDiscovery();
+		}
+
+		m_ActivelySearching = true;
+		m_NearbyDevices = new ArrayList<>();
+
+		Set<BluetoothDevice> bondedDevices = m_BluetoothAdapter.getBondedDevices();
+
+		BTBondedConnector connectionAttempt = new BTBondedConnector(bondedDevices, this);
+		connectionAttempt.execute(); // resumed in serverConnectorResult
+	}
+
+	@Override
+	public void serverConnectorResult(BluetoothSocket serverSocketResult)
+	{
+		if(serverSocketResult == null)
+		{
+			m_ConnectionCallbackListener.notifyRecoverableFailure(R_SERVER_NOT_BONDED);
+			m_ActivelySearching = false;
+
+			return;
+		}
+
+		m_ConnectionCallbackListener.serverConnected(serverSocketResult);
+	}
+
+	/**
 	 * Connects to the server by searching the area for devices. When the server is
 	 * located, then the connection socket will be returned in the
 	 * {@link IServerConnectionListener} callback. If the server
 	 * connection cannot be established, the reasons will be logged and alerted.
 	 */
-	public void connectToServer()
+	public void pollForServer()
 	{
-
 		if (m_BluetoothAdapter.isDiscovering() || m_ActivelySearching)
 		{
-
 			return;
 		}
 
 		m_ActivelySearching = true;
-
-		// TODO check bonded devices first
 
 		m_NearbyDevices = new ArrayList<>();
 		m_BluetoothAdapter.startDiscovery();
@@ -132,12 +161,10 @@ public class BTConnectionClient extends BroadcastReceiver
 	@Override
 	public void onReceive(Context context, Intent intent)
 	{
-
 		final String ACTION = intent.getAction();
 
 		switch (ACTION)
 		{
-
 			case BluetoothDevice.ACTION_FOUND:
 
 				handleDeviceFound(intent);
@@ -152,7 +179,6 @@ public class BTConnectionClient extends BroadcastReceiver
 				// UUIDs. If there are not, then we had no luck finding the server.
 				if (m_ActivelySearching)
 				{
-
 					checkPendingFetchStatus();
 				}
 
@@ -172,13 +198,24 @@ public class BTConnectionClient extends BroadcastReceiver
 		}
 	}
 
+	/**
+	 * Called when discovery for bluetooth devices is completed. If m_NearbyDevices is not
+	 * populated, then this method will notify the callback that the server was not found.
+	 * Otherwise, this will iterate through the discovered devices and poll for the available
+	 * SDP ports in attempt to find the server. The results will be notified via the broadcast
+	 * receiver event {@link BluetoothDevice#ACTION_UUID}
+	 */
 	private void handleDiscoveryFinished()
 	{
-
 		if (m_NearbyDevices.size() == 0)
 		{
 			m_ConnectionCallbackListener.notifyRecoverableFailure(R_SERVER_NOT_FOUND);
 			m_ActivelySearching = false;
+		}
+
+		if(m_ActivelySearching == false)
+		{
+			return;
 		}
 
 		for (BluetoothDevice device : m_NearbyDevices)
@@ -195,8 +232,8 @@ public class BTConnectionClient extends BroadcastReceiver
 	 */
 	private void handleDeviceFound(Intent intent)
 	{
-
 		BluetoothDevice foundDevice = extractDeviceFromIntent(intent);
+		Debug.log("Found: " + foundDevice.getName() + " in discovery.");
 
 		if (foundDevice == null)
 		{
@@ -214,11 +251,9 @@ public class BTConnectionClient extends BroadcastReceiver
 	 */
 	private void handleFetchUUIDResponse(Intent intent)
 	{
-
 		// no need to check if we aren't searching...
 		if (m_ActivelySearching == false)
 		{
-
 			return;
 		}
 
@@ -228,9 +263,20 @@ public class BTConnectionClient extends BroadcastReceiver
 		Parcelable[] UUIDs = intent.getParcelableArrayExtra(BluetoothDevice.EXTRA_UUID);
 		if (serverUUIDContained(UUIDs))
 		{
-
-			connectToServerAndNotify(devicePolled);
-			m_ActivelySearching = false;
+			try
+			{
+				connectToServerAndNotify(devicePolled);
+			}
+			catch(IOException ioe)
+			{
+				Debug.logError("Could not open server connection!");
+				ioe.printStackTrace();
+				m_ConnectionCallbackListener.notifyRecoverableFailure(R_SOCKET_CONNECTION_FAILED);
+			}
+			finally
+			{
+				m_ActivelySearching = false;
+			}
 		}
 	}
 
@@ -241,10 +287,8 @@ public class BTConnectionClient extends BroadcastReceiver
 	 */
 	private void checkPendingFetchStatus()
 	{
-
 		if (m_NearbyDevices.size() == 0)
 		{
-
 			m_ConnectionCallbackListener.notifyRecoverableFailure(R_SERVER_NOT_FOUND);
 			m_ActivelySearching = false;
 		}
@@ -258,15 +302,12 @@ public class BTConnectionClient extends BroadcastReceiver
 	 */
 	private BluetoothDevice extractDeviceFromIntent(Intent intent)
 	{
-
 		BluetoothDevice deviceFound = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
 		if (deviceFound == null)
 		{
 			return null;
 		}
-
-		Debug.log("Found: " + deviceFound.getName() + " in discovery.");
 
 		return deviceFound;
 	}
@@ -279,27 +320,15 @@ public class BTConnectionClient extends BroadcastReceiver
 	 *
 	 * @param server
 	 */
-	private void connectToServerAndNotify(BluetoothDevice server)
+	private void connectToServerAndNotify(BluetoothDevice server) throws IOException
 	{
+		BluetoothSocket socketConnection =
+				server.createInsecureRfcommSocketToServiceRecord(SERVER_UUID); // TODO secure
 
-		try
-		{
-			BluetoothSocket socketConnection =
-					server.createInsecureRfcommSocketToServiceRecord(SERVER_UUID); // TODO secure
+		socketConnection.connect();
 
-			socketConnection.connect();
-			m_ConnectionCallbackListener.serverConnected(socketConnection);
-
-			m_BluetoothAdapter.cancelDiscovery();
-
-		} catch (IOException e)
-		{
-
-			Debug.logError("Could not open server connection!");
-			e.printStackTrace();
-			m_ConnectionCallbackListener.notifyRecoverableFailure(R_SOCKET_CONNECTION_FAILED);
-		}
-
+		m_ConnectionCallbackListener.serverConnected(socketConnection);
+		m_BluetoothAdapter.cancelDiscovery();
 	}
 
 	/**
@@ -327,5 +356,4 @@ public class BTConnectionClient extends BroadcastReceiver
 
 		return false;
 	}
-
 }
