@@ -12,15 +12,17 @@ namespace BTConnectionService.control
     class BTDataIO
     {
         Stream m_DataStream;
+        bool m_SocketOpen;
 
         public BTDataIO(Stream dataStream)
         {
             this.m_DataStream = dataStream;
+            this.m_SocketOpen = true;
         }
 
         public Boolean CanRead()
         {
-            return m_DataStream.CanRead;
+            return m_SocketOpen && m_DataStream.CanRead;
         }
 
         /// <summary>
@@ -42,6 +44,11 @@ namespace BTConnectionService.control
                 Log.write("Read " + nextByte);
                 int buttonID = Convert.ToInt32(nextByte);
                 commands = DBHelper.GetActions(buttonID);
+            }
+            else
+            {
+                Log.write("Socket connection closed.");
+                m_SocketOpen = false;
             }
 
             return commands;

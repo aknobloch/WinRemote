@@ -5,9 +5,7 @@ import android.bluetooth.BluetoothSocket;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -17,12 +15,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.view.ViewGroup;
 import android.widget.GridLayout;
 
 import com.disabledtech.winremote.R;
 import com.disabledtech.winremote.control.BTConnectionClient;
 import com.disabledtech.winremote.control.BTDataIO;
+import com.disabledtech.winremote.exceptions.ServerConnectionClosedException;
 import com.disabledtech.winremote.interfaces.IServerConnectionListener;
 import com.disabledtech.winremote.model.WinAction;
 import com.disabledtech.winremote.model.WinActionButton;
@@ -44,11 +43,17 @@ public class MainActivity extends AppCompatActivity
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
-
 		super.onCreate(savedInstanceState);
 
-		// TODO user feedback while connection to server is being established
 		initializeLayout();
+	}
+
+	@Override
+	protected void onDestroy()
+	{
+		super.onDestroy();
+
+		m_DataIO.closeConnection();
 	}
 
 	/**
@@ -72,30 +77,50 @@ public class MainActivity extends AppCompatActivity
 		try
 		{
 			m_DataIO.send(buttonPressed.getWinAction());
-		} catch (IOException e)
+		}
+		catch(ServerConnectionClosedException scce)
+		{
+			// TODO better UI handling
+			Device.showToast(this, "Server connection lost.");
+			clearButtons();
+		}
+		catch (IOException ioe)
 		{
 			// TODO UI feedback
 			Debug.logError("Error sending button information to server.");
-			e.printStackTrace();
+			ioe.printStackTrace();
 		}
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
-
 		int id = item.getItemId();
 
-		// TODO options menu
 		switch (id)
 		{
 			case R.id.action_connect:
+				// TODO user feedback while connection to server is being established, have this perform automatically on launch
 				Device.showToast(this, "Attempting connection...");
 				beginServerConnection();
+				return true;
+
+			case R.id.action_disconnect:
+				m_DataIO.closeConnection();
+				clearButtons();
 				return true;
 		}
 
 		return super.onOptionsItemSelected(item);
+	}
+
+	/**
+	 * Clears all the buttons from the grid layout.
+	 */
+	private void clearButtons()
+	{
+		ViewGroup gridButtonGroup = (ViewGroup) findViewById(R.id.grid_layout);
+		gridButtonGroup.removeAllViews();
 	}
 
 	@Override
@@ -118,7 +143,6 @@ public class MainActivity extends AppCompatActivity
 	@Override
 	public void onBackPressed()
 	{
-
 		DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
 		// if the template drawer is open, back should just close it
@@ -138,7 +162,6 @@ public class MainActivity extends AppCompatActivity
 	 */
 	private void beginServerConnection()
 	{
-
 		if (Device.hasBluetoothPermissions(this))
 		{
 			getServerConnection();
@@ -157,13 +180,12 @@ public class MainActivity extends AppCompatActivity
 	 */
 	public void getServerConnection()
 	{
-
 		if (m_ConnectionClient == null)
 		{
 			m_ConnectionClient = new BTConnectionClient(this, this);
 		}
 
-		m_ConnectionClient.connectToServer();
+		m_ConnectionClient.attemptBondedConnection();
 	}
 
 	/**
@@ -177,7 +199,6 @@ public class MainActivity extends AppCompatActivity
 	@Override
 	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
 	{
-
 		boolean permissionGranted = grantResults.length > 0 &&
 				grantResults[0] == PackageManager.PERMISSION_GRANTED;
 
@@ -198,7 +219,6 @@ public class MainActivity extends AppCompatActivity
 	@Override
 	public void serverConnected(BluetoothSocket connectedSocket)
 	{
-
 		Device.showToast(this, "Connection to the server made!");
 		m_DataIO = new BTDataIO(connectedSocket);
 
@@ -241,7 +261,6 @@ public class MainActivity extends AppCompatActivity
 
 	private void initializeLayout()
 	{
-
 		setContentView(R.layout.activity_main);
 
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
