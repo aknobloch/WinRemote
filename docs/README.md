@@ -64,8 +64,8 @@ Setting up Windows server dependencies:
 ```
 To set up the database in Visual Studio you will need to:
 ```
-* right click references > manage NuGET > browse > SQLite.Net-PCL > install
-* download sqlite3 dll from http://www.sqlite.org/download.html and copy it into bin/Debug folder
+* Right-click References > Manage NuGET Packages > Browse > SQLite.Net-PCL > Install
+* Download the 32-bit (x86) [SQLite3 DLL](http://www.sqlite.org/download.html) and copy it into bin/Debug folder.
 
 ```
 To work with the Electron Windows GUI:
