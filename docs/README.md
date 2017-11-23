@@ -17,13 +17,14 @@ DisabledTech
 
 ## Process tool and URL
 
-* [Android Studio](https://developer.android.com/studio/index.html) - One of the development environments used
-* [Visual Studio](https://www.visualstudio.com/) - One of the development environments used
-* [SQLite](https://www.sqlite.org/) - One of the technologies used
-* [Bluetooth](https://www.bluetooth.com/) - One of the technologies used
-* [C#](https://docs.microsoft.com/en-us/dotnet/csharp/csharp) - One of the languages used
-* [JAVA](http://docs.oracle.com/javase/8/) - One of the languages used
-* More to come!
+* [Android Studio](https://developer.android.com/studio/index.html) - Android Studio is the official integrated development environment for Google's Android operating system, built on JetBrains' IntelliJ IDEA software and designed specifically for Android development.
+* [Visual Studio](https://www.visualstudio.com/) - Microsoft Visual Studio is an integrated development environment from Microsoft. It is used to develop computer programs for Microsoft Windows, as well as web sites, web apps, web services and mobile apps.
+* [Atom](https://atom.io/) - Atom is a free and open-source text and source code editor for macOS, Linux, and Microsoft Windows with support for plug-ins written in Node.js, and embedded Git Control, developed by GitHub.
+* [SQLite](https://www.sqlite.org/) - SQLite is a relational database management system contained in a C programming library. In contrast to many other database management systems, SQLite is not a client–server database engine. Rather, it is embedded into the end program.
+* [Bluetooth](https://www.bluetooth.com/) - Bluetooth is a wireless technology standard for exchanging data over short distances from fixed and mobile devices, and building personal area networks.
+* [C#](https://docs.microsoft.com/en-us/dotnet/csharp/csharp) - C# is a programming language encompassing strong typing, imperative, declarative, functional, generic, object-oriented, and component-oriented programming disciplines.
+* [JAVA](http://docs.oracle.com/javase/8/) - Java is a general-purpose computer programming language that is concurrent, class-based, object-oriented, and specifically designed to have as few implementation dependencies as possible.
+* [Electron](https://electronjs.org/) - Electron is an open-source framework created by Cheng Zhao, and now developed by GitHub. It allows for the development of desktop GUI applications using front and back end components.
 
 ## Communication tool
 
@@ -45,32 +46,34 @@ Hello and welcome!
 
 It's currently 2017 and there are so many amazing keyboard shortcuts to make our lives easier.  Some of these shortcuts can require a few keys to be pressed simultaneously or even a long key press such as clicking and dragging the mouse.  We are aware and troubled that these events can be difficult for some users.  DisabledTech is here to harness the power of technology and give all users equal power behind a keyboard.  We will start off by creating a mobile app, android first, that will allow users to pick from a pre-built library of commands or create and send their own custom commands from a phone app to a windows system.  These big beautiful buttons that our app provides will be an elegant and simple alternative to those pesky complex keyboard shortcuts.  All this and an easy to use user interface this app is intended for use and will benefit all users.
 
-## What can it do (we could put features or changes here?)
-
-* version 0.0.0 - Nothing yet unfortunately, we haven’t started... :(
-* version 0.0.1 - The app can now send pre programmed commands to the active window
-
 ## Getting Started
 
-Getting started has never been easier all you need to do is please be patient while we draft up some incredible plans to unleash your true computing power
+To get started adding features and functionality to this app start by forking, cloning, or downloading.  You can then chose to import the projects into our favorite IDEs.  We are using [Android Studio](https://developer.android.com/studio/index.html), [Visual Studio](https://www.visualstudio.com/), and [Atom](https://atom.io/) during this project.  
 
-### Prerequisites
-
-An Android hand held device with access to Google Play
-
+### Setup guidelines
 ```
-This will be essential for button smashing
+Setting up Windows server dependencies:
+* Prerequisites
+	1. Visual Studio 2017 with the .NET desktop development package.
 ```
-A computer with windows OS
-
-```
-To be the recipient of data sent by smashing buttons on your phone
-```
-Patience
+1. First, download the latest 32Feet.NET library from [here](https://32feet.codeplex.com/releases/view/88941) 
+2. Run the setup files for the library. It will likely require you to install an older version of the .NET framework in the installer. The library (as of writing) runs on .NET 3.5, while our project is built with a later version. You need both, but they are intercompatible. 
+* *warning* The installer may give you an error that the MS Help 2.X runtime is not installed. If you care about Help files, you can try to solve that. I don't, so I didn't and it was fine. 
+3. Afterwards, open the project solution file. 
 
 ```
-Lots and lots of patience...
+To set up the database in Visual Studio you will need to:
 ```
+* right click references > manage NuGET > browse > SQLite.Net-PCL > install
+* download sqlite3 dll from http://www.sqlite.org/download.html and copy it into bin/Debug folder
+
+```
+To work with the Electron Windows GUI:
+```
+* You'll need the node_modules folder and all its contents.
+* run the following command in the cmd prompt to start the app IF you have node and NPM globally installed.  
+.\node_modules\.bin\electron .
+* However if neither are installed please look for an [online install guide](http://blog.teamtreehouse.com/install-node-js-npm-windows)
 
 
 ### Installing
@@ -80,15 +83,6 @@ There must be something to install
 ```
 Before I can tell you how to install
 ```
-
-And repeat
-
-```
-until finished
-```
-
-Pictures can be added to help with the process?
-
 
 ## Contributing
 
@@ -100,7 +94,7 @@ We use [GitHub](http://github.com/) for versioning. For the versions available, 
 
 ## License
 
-TBD
+GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
 
 ## Acknowledgments
 
