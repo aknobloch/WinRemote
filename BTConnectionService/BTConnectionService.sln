@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BTConnectionService", "BTConnectionService\BTConnectionService.csproj", "{2488A216-B753-42BB-A3DC-48B3DAB02B24}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinRemoteDesktop_Test", "WinRemoteDesktop_Test\WinRemoteDesktop_Test.csproj", "{DB80291E-30EE-4A3C-8774-80508595DF2E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{2488A216-B753-42BB-A3DC-48B3DAB02B24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2488A216-B753-42BB-A3DC-48B3DAB02B24}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2488A216-B753-42BB-A3DC-48B3DAB02B24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB80291E-30EE-4A3C-8774-80508595DF2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB80291E-30EE-4A3C-8774-80508595DF2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB80291E-30EE-4A3C-8774-80508595DF2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB80291E-30EE-4A3C-8774-80508595DF2E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
