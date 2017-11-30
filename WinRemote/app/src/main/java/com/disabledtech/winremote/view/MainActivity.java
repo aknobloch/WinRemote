@@ -102,6 +102,7 @@ public class MainActivity extends AppCompatActivity
 			case R.id.action_connect:
 				// TODO user feedback while connection to server is being established, have this perform automatically on launch
 				Device.showToast(this, "Attempting connection...");
+				closeServerConnection();
 				beginServerConnection();
 				return true;
 
