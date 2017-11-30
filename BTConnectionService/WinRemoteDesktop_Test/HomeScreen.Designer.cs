@@ -105,6 +105,7 @@ namespace WinRemoteDesktop_Test
             this.deleteButtonBtn.TabIndex = 8;
             this.deleteButtonBtn.Text = "Delete Button";
             this.deleteButtonBtn.UseVisualStyleBackColor = true;
+            this.deleteButtonBtn.Visible = false;
             this.deleteButtonBtn.Click += new System.EventHandler(this.deleteButtonBtn_Click);
             // 
             // createMacroBtn
@@ -125,6 +126,7 @@ namespace WinRemoteDesktop_Test
             this.deleteMacroBtn.TabIndex = 10;
             this.deleteMacroBtn.Text = "Delete Macro";
             this.deleteMacroBtn.UseVisualStyleBackColor = true;
+            this.deleteMacroBtn.Visible = false;
             this.deleteMacroBtn.Click += new System.EventHandler(this.deleteMacroBtn_Click);
             // 
             // HomeScreen

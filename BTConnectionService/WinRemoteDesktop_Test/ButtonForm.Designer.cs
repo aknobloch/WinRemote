@@ -54,7 +54,7 @@
             this.macroDataGrid.ReadOnly = true;
             this.macroDataGrid.Size = new System.Drawing.Size(298, 415);
             this.macroDataGrid.TabIndex = 4;
-            this.macroDataGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.macroDataGrid_CellContentClick);
+            //this.macroDataGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.macroDataGrid_CellContentClick);
             // 
             // addMacroBtn
             // 
@@ -75,7 +75,7 @@
             this.btnTempDataGrid.Name = "btnTempDataGrid";
             this.btnTempDataGrid.Size = new System.Drawing.Size(298, 415);
             this.btnTempDataGrid.TabIndex = 6;
-            this.btnTempDataGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.btnTempDataGrid_CellContentClick);
+            //this.btnTempDataGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.btnTempDataGrid_CellContentClick);
             // 
             // saveBtn
             // 

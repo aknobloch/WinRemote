@@ -26,16 +26,6 @@ namespace WinRemoteDesktop_Test
 
         }
 
-        private void macroDataGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        public static void buildTempButtonGrid()
-        {
-
-        }
-
         private void fillDataGrids()
         {
             macroDataGrid.DataSource = DBHelper.grabDataset("WR_Macro").Tables[0].DefaultView;
@@ -44,11 +34,6 @@ namespace WinRemoteDesktop_Test
         private void addTempButton(string ID, string desc)
         {            
             btnTempDataGrid.Rows.Add(ID, desc);
-        }
-
-        private void btnTempDataGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
         }
 
         private void addMacroBtn_Click(object sender, EventArgs e)

@@ -20,6 +20,7 @@ namespace WinRemoteDesktop_Test
             {
                 SQLiteConnection.CreateFile(DB_PATH);
                 buildStockDB();
+                createStockMacros();
             }
             else
             {
@@ -65,9 +66,11 @@ namespace WinRemoteDesktop_Test
                 var da = new SQLiteDataAdapter(sql, conn);
                 da.Fill(ds);                
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Console.WriteLine(e.StackTrace);
                 throw;
+
             }
             conn.Close();
             return ds;
@@ -119,6 +122,12 @@ namespace WinRemoteDesktop_Test
             return codelib;
         }
 
-
+        public static void createStockMacros()
+        {
+            createSimpleMacro("^C","Win","Ctrl-C");
+            createSimpleMacro("^V", "Win", "Ctrl-V");
+            createSimpleMacro("^A", "Win", "Ctrl-A");
+            createSimpleMacro("&{TAB}", "Win", "Alt-Tab");           
+        }
     }
 }

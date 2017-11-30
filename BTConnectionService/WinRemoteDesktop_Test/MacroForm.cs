@@ -21,5 +21,42 @@ namespace WinRemoteDesktop_Test
         {
 
         }
+
+        private void descTxtBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tagCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (tagCombo.Text == "String")
+            {
+                
+            }
+            else if (tagCombo.Text == "WinShortcut")
+            {
+                //Nothing yet but hide buttons.
+                
+
+            }
+        }
+
+        private void submitMacroBtn_Click(object sender, EventArgs e)
+        {
+            string cmd = macroTxtBox.Text;
+            string tag = tagCombo.Text;
+            string description = descTxtBox.Text;
+            DBHelper.createSimpleMacro(cmd, tag, description);
+            //DBHelper.addKeyCodes(macroFromTxt);
+            macroTxtBox.Clear();
+            descTxtBox.Clear();
+            this.Close();
+            
+        }
+
+        private void macroTxtBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -15,9 +15,10 @@ namespace WinRemoteDesktop_Test
         public HomeScreen()
         {
             InitializeComponent();
+            DBHelper.CreateDatabase();
             fillDataGrids();
-            Form1 form = new Form1();
-            form.Show();
+            //Form1 form = new Form1();
+            //form.Show();
         }
 
         private void fillDataGrids()
@@ -83,6 +84,7 @@ namespace WinRemoteDesktop_Test
         {
             macroDataGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             buttonDataGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            DBHelper.CreateDatabase();
             fillDataGrids();
         }
 
