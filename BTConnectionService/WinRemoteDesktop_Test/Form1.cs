@@ -16,8 +16,11 @@ namespace WinRemoteDesktop_Test
         {
             InitializeComponent();
             DBHelper.CreateDatabase();
+            macroDataGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            buttonDataGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             //DBHelper.buildStockDB();
             //DBHelper.addKeyCodes("");
+            //DBHelper.executeQuery("CREATE TABLE WR_TEMP()");
             fillDataGrids();            
         }
 
@@ -27,15 +30,14 @@ namespace WinRemoteDesktop_Test
 
         private void submitMacroBtn_Click(object sender, EventArgs e)
         {
-            string macroFromTxt = macroTxtBox.Text;
+            string cmd = macroTxtBox.Text;
             string tag = tagCombo.Text;
             string description = descTxtBox.Text;
-            DBHelper.createSimpleMacro(macroFromTxt, tag, description);
+            DBHelper.createSimpleMacro(cmd, tag, description);
             //DBHelper.addKeyCodes(macroFromTxt);
             macroTxtBox.Clear();
             descTxtBox.Clear();
             fillDataGrids();  
-            
         }
 
         private void macroDataGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -64,14 +66,40 @@ namespace WinRemoteDesktop_Test
 
         private void tagCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(tagCombo.Text == "String")
+            if (tagCombo.Text == "String")
+            {
+                viewStringInterface(1);
+            }
+            else if (tagCombo.Text == "Button")
+            {
+                //Nothing yet but hide buttons.
+                viewStringInterface(0);
+                ButtonForm btnform = new ButtonForm();
+                btnform.Show();
+                
+            }
+
+        }
+
+        private void viewStringInterface(int bit)
+        {
+            if(bit == 0)
+            {
+                cmdLabel.Visible = false;
+                macroTxtBox.Visible = false;
+                descLabel.Visible = false;
+                descTxtBox.Visible = false;
+                submitMacroBtn.Visible = false;
+            }
+            else if(bit == 1)
             {
                 cmdLabel.Visible = true;
                 macroTxtBox.Visible = true;
                 descLabel.Visible = true;
                 descTxtBox.Visible = true;
+                submitMacroBtn.Visible = true;
             }
-
+            
         }
     }
 }

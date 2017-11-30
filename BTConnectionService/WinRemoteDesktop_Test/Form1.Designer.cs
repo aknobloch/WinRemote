@@ -93,8 +93,7 @@
             this.tagCombo.FormattingEnabled = true;
             this.tagCombo.Items.AddRange(new object[] {
             "String",
-            "Python",
-            "Windows Shortcut"});
+            "Button"});
             this.tagCombo.Location = new System.Drawing.Point(2, 19);
             this.tagCombo.Name = "tagCombo";
             this.tagCombo.Size = new System.Drawing.Size(121, 21);
@@ -140,11 +139,11 @@
             this.Controls.Add(this.descLabel);
             this.Controls.Add(this.cmdLabel);
             this.Controls.Add(this.tagCombo);
-            this.Controls.Add(this.keycodeDataGrid);
             this.Controls.Add(this.buttonDataGrid);
             this.Controls.Add(this.macroDataGrid);
             this.Controls.Add(this.macroTxtBox);
             this.Controls.Add(this.submitMacroBtn);
+            this.Controls.Add(this.keycodeDataGrid);
             this.Name = "Form1";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.macroDataGrid)).EndInit();

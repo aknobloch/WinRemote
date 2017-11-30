@@ -73,6 +73,15 @@ namespace WinRemoteDesktop_Test
             return ds;
         }
 
+        public static void executeQuery(string query)
+        {            
+            var conn = new SQLiteConnection("Data Source=" + DB_PATH + ";Version=3;");
+            conn.Open();
+            SQLiteCommand cmd = new SQLiteCommand(query, conn);
+            cmd.ExecuteNonQuery();
+            conn.Close();
+        }
+
         public static void createSimpleMacro(string macro, string tag, string description)
         {
             string insert = "INSERT INTO WR_MACRO(mc_description, mc_command, mc_tag) VALUES('"+description+"','"+macro+"','"+tag+"')";
@@ -83,14 +92,24 @@ namespace WinRemoteDesktop_Test
             conn.Close();
         }
 
-        public static void createSimpleButton()
+        public static void createSimpleButton(string mcID, string desc)
         {
-            //string insert = "INSERT INTO WR_MACRO(mc_description, mc_command, mc_tag) VALUES('" + description + "','" + macro + "','" + tag + "')";
-            //var conn = new SQLiteConnection("Data Source=" + DB_PATH + ";Version=3;");
-            //conn.Open();
-            //SQLiteCommand cmd = new SQLiteCommand(insert, conn);
-            //cmd.ExecuteNonQuery();
-            //conn.Close();
+            string insert = "INSERT INTO WR_BUTTON(btn_mc_ID, btn_description) VALUES('" + mcID + "','" + desc + "')";
+            var conn = new SQLiteConnection("Data Source=" + DB_PATH + ";Version=3;");
+            conn.Open();
+            SQLiteCommand cmd = new SQLiteCommand(insert, conn);
+            cmd.ExecuteNonQuery();
+            conn.Close();
+        }
+
+        public static string getNewBtnID()
+        {
+            string query = "SELECT MAX(mc_ID) FROM WR_MACRO WHERE mc_tag = 'BTN'";
+            var conn = new SQLiteConnection("Data Source=" + DB_PATH + ";Version=3;");
+            conn.Open();
+            SQLiteCommand cmd = new SQLiteCommand(query, conn);
+            string btnid = cmd.ExecuteScalar().ToString();
+            return btnid;
         }
 
         public static Dictionary<int, string> buildLibrary()
