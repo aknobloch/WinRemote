@@ -64,8 +64,9 @@ Setting up Windows server dependencies:
 ```
 To set up the database in Visual Studio you will need to:
 ```
-* Right click references > manage NuGET > browse > SQLite.Net-PCL > install
-* Download sqlite3 dll from http://www.sqlite.org/download.html 
+
+* Right-click References > Manage NuGET Packages > Browse > SQLite.Net-PCL > Install
+* Download the 32-bit (x86) [SQLite3 DLL](http://www.sqlite.org/download.html) and copy it into bin/Debug folder.
 * Select the BTConnectionService top-level folder in the Solution Explorer.
 * Go to Project > Add Existing Item and then select the sqlite3.dll file
 * Now, right click the .dll that is in the solution folder, and select Properties
