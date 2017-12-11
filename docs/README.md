@@ -82,7 +82,7 @@ To work with the Electron Windows GUI:
 
 ### Installing
 
-There is nothing to install at this time, simply run the server executable.
+There is nothing to install at this time, simply run the server executable. The downloads for our installation package can be found in the [releases section](https://github.com/soft-eng-practicum/disabledTech/releases).
 
 ## Contributing
 
