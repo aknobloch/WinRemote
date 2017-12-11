@@ -102,16 +102,29 @@ public class MainActivity extends AppCompatActivity
 			case R.id.action_connect:
 				// TODO user feedback while connection to server is being established, have this perform automatically on launch
 				Device.showToast(this, "Attempting connection...");
+				closeServerConnection();
 				beginServerConnection();
 				return true;
 
 			case R.id.action_disconnect:
-				m_DataIO.closeConnection();
-				clearButtons();
+				closeServerConnection();
 				return true;
 		}
 
 		return super.onOptionsItemSelected(item);
+	}
+
+	/**
+	 * Closes the connection, sets m_DataIO to null and
+	 * clears all buttons from the screen.
+	 */
+	private void closeServerConnection()
+	{
+		if(m_DataIO == null) return;
+
+		m_DataIO.closeConnection();
+		m_DataIO = null;
+		clearButtons();
 	}
 
 	/**

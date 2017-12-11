@@ -64,8 +64,13 @@ Setting up Windows server dependencies:
 ```
 To set up the database in Visual Studio you will need to:
 ```
+
 * Right-click References > Manage NuGET Packages > Browse > SQLite.Net-PCL > Install
 * Download the 32-bit (x86) [SQLite3 DLL](http://www.sqlite.org/download.html) and copy it into bin/Debug folder.
+* Select the BTConnectionService top-level folder in the Solution Explorer.
+* Go to Project > Add Existing Item and then select the sqlite3.dll file
+* Now, right click the .dll that is in the solution folder, and select Properties
+* Ensure that Build Action is set to Content and Copy to Output is set to Copy if newer...
 
 ```
 To work with the Electron Windows GUI:
@@ -78,11 +83,7 @@ To work with the Electron Windows GUI:
 
 ### Installing
 
-There must be something to install
-
-```
-Before I can tell you how to install
-```
+There is nothing to install at this time, simply run the server executable. The downloads for our installation package can be found in the [releases section](https://github.com/soft-eng-practicum/disabledTech/releases).
 
 ## Contributing
 
