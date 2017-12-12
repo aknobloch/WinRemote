@@ -15,7 +15,7 @@ It's currently 2017 and there are so many amazing keyboard shortcuts to make our
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](https://github.com/soft-eng-practicum/disabledTech/blob/master/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us. 
+Please read [our contributors documentation](https://github.com/aknobloch/disabledTech/blob/development_integration/docs/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us. 
 
 ## Communication tool
 
