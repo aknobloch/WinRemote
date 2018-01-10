@@ -1,0 +1,8 @@
+﻿# File format is as follows: 
+# Pound sign is intepreted as a comment.
+# Button definitions are in the form <Template>;<Name>;<Action>
+# Template is currently optional.
+# Action will be sent directly into the SendKeys method
+# Button ID's will be assigned in numerical order as they are parsed
+Space;{SPACE}
+Escape;{ESC}

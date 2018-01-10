@@ -38,6 +38,11 @@ namespace BTConnectionService
 
                 Log.write("Connection established.");
                 BTDataIO clientStream = new BTDataIO(connection.GetStream());
+
+                ButtonLoader loader = new ButtonLoader();
+                loader.LoadButtons();
+
+                clientStream.SendButtons(loader.GetButtons());
                 
                 while (clientStream.CanRead())
                 {

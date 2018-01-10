@@ -4,8 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using winRemoteDataBase.Controller;
-using winRemoteDataBase.Model;
+using BTConnectionService.model;
+using System.Runtime.Serialization.Json;
 
 namespace BTConnectionService.control
 {
@@ -43,7 +43,7 @@ namespace BTConnectionService.control
             {
                 Log.write("Read " + nextByte);
                 int buttonID = Convert.ToInt32(nextByte);
-                commands = DBHelper.GetActions(buttonID);
+                commands.Add("" + buttonID);
             }
             else
             {
@@ -52,6 +52,25 @@ namespace BTConnectionService.control
             }
 
             return commands;
+        }
+
+        public void SendButtons(List<DTButton> buttonList)
+        {
+            if(m_SocketOpen == false)
+            {
+                Log.write("SendButtons failed, socket not open!");
+                return;
+            }
+
+            MemoryStream ms = new MemoryStream();
+            DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(typeof(List<DTButton>));
+            
+            jsonSerializer.WriteObject(ms, buttonList);
+
+            byte[] jsonOut = ms.ToArray();
+            ms.Close();
+
+            m_DataStream.Write(jsonOut, 0, jsonOut.Length);
         }
     }
 }
