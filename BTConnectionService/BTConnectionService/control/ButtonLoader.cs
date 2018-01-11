@@ -8,11 +8,11 @@ namespace BTConnectionService.control
     {
         const string BUTTON_FILE_PATH = "config\\button_definitions.txt";
 
-        List<DTButton> buttonList;
+        List<WinAction> buttonList;
 
         public void LoadButtons()
         {
-            buttonList = new List<DTButton>();
+            buttonList = new List<WinAction>();
 
             using (StreamReader fileIn = File.OpenText(BUTTON_FILE_PATH))
             {
@@ -55,17 +55,17 @@ namespace BTConnectionService.control
                 action = lineInfo[1];
             }
 
-            DTButton newButton = new DTButton(buttonList.Count + 1, template, name, action);
+            WinAction newButton = new WinAction(buttonList.Count, template, name, action);
             buttonList.Add(newButton);
         }
 
         /// <summary>
         /// Gets the buttons that have been cached. If the LoadButtons() method
-        /// has not been explicity called already, or if the buttons cache has been
-        /// invalidated, the buttons will be loaded implicitly by this method.
+        /// has not been explicity called already, the buttons will be loaded
+        /// implicitly by this method.
         /// </summary>
         /// <returns></returns>
-        public List<DTButton> GetButtons()
+        public List<WinAction> GetButtons()
         {
             if(buttonList == null)
             {

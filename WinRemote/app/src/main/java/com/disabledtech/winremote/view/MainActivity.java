@@ -235,8 +235,16 @@ public class MainActivity extends AppCompatActivity
 		Device.showToast(this, "Connection to the server made!");
 		m_DataIO = new BTDataIO(connectedSocket);
 
-		List<WinAction> userActions = m_DataIO.getActionData();
-		populateActivityButtons(userActions);
+		try
+		{
+			List<WinAction> userActions = m_DataIO.getActionData();
+			populateActivityButtons(userActions);
+		}
+		catch(IOException ioe)
+		{
+			Debug.log(ioe.getMessage());
+			Device.showToast(this, "Failure reading buttons from server!");
+		}
 	}
 
 	/**

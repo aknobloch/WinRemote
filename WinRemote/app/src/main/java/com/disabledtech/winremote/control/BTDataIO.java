@@ -1,14 +1,23 @@
 package com.disabledtech.winremote.control;
 
 import android.bluetooth.BluetoothSocket;
+import android.util.JsonReader;
 
 import com.disabledtech.winremote.exceptions.ServerConnectionClosedException;
 import com.disabledtech.winremote.model.WinAction;
 import com.disabledtech.winremote.utils.Debug;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -62,21 +71,45 @@ public class BTDataIO
 
 	/**
 	 * Reads the initial button data from the server.
-	 * TODO: not implemented yet, returns hardcoded actions
 	 *
 	 * @return List of all the actions provided by the server
 	 */
-	public List<WinAction> getActionData()
+	public List<WinAction> getActionData() throws IOException
 	{
-		// TODO handle when server disconnects
-		List<WinAction> dummyList = new ArrayList<>();
+		String jsonData = readServerString();
 
-		dummyList.add(new WinAction("Copy", 1));
-		dummyList.add(new WinAction("Paste", 2));
-		dummyList.add(new WinAction("Select All", 3));
+		Gson jsonParser = new GsonBuilder().create();
+		WinAction[] serverActions = jsonParser.fromJson(jsonData,  WinAction[].class);
 
-		Debug.log("Retrieved " + dummyList.size() + " buttons from the server.");
-		return dummyList;
+		List<WinAction> serverActionList = Arrays.asList(serverActions);
+
+		Debug.log("Retrieved " + serverActionList.size() + " buttons from the server.");
+		return serverActionList;
+	}
+
+	/**
+	 * Reads JSON data from the server socket, returning a string
+	 * of the data that was read.
+	 *
+	 * FIXME: This is a blocking method, but for now data is small enough to be insignificant.
+	 * @return
+	 * @throws IOException
+	 */
+	public String readServerString() throws IOException
+	{
+		ByteArrayOutputStream bufferedOutput = new ByteArrayOutputStream();
+		InputStream serverStream = m_ServerSocket.getInputStream();
+
+		while(serverStream.available() > 0)
+		{
+			bufferedOutput.write(serverStream.read());
+		}
+
+		serverStream.close();
+		bufferedOutput.flush();
+
+		byte[] rawData = bufferedOutput.toByteArray();
+		return new String(rawData, "UTF-8");
 	}
 
 	public void closeConnection()

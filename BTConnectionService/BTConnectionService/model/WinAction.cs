@@ -8,7 +8,7 @@ using System.Runtime.Serialization;
 namespace BTConnectionService.model
 {
     [DataContract]
-    class DTButton
+    class WinAction
     {
         [DataMember]
         int m_ID;
@@ -22,7 +22,7 @@ namespace BTConnectionService.model
         [DataMember]
         string m_SendKeysAction;
 
-        public DTButton(int id, string template, string name, string action)
+        public WinAction(int id, string template, string name, string action)
         {
             this.m_ID = id;
             this.m_Template = template;

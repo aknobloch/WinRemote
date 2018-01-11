@@ -54,7 +54,7 @@ namespace BTConnectionService.control
             return commands;
         }
 
-        public void SendButtons(List<DTButton> buttonList)
+        public void SendButtons(List<WinAction> buttonList)
         {
             if(m_SocketOpen == false)
             {
@@ -63,12 +63,15 @@ namespace BTConnectionService.control
             }
 
             MemoryStream ms = new MemoryStream();
-            DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(typeof(List<DTButton>));
+            DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(typeof(List<WinAction>));
             
             jsonSerializer.WriteObject(ms, buttonList);
 
             byte[] jsonOut = ms.ToArray();
             ms.Close();
+
+            Log.write("Sending JSON WinActions:");
+            Log.write(Encoding.UTF8.GetString(jsonOut, 0, jsonOut.Length));
 
             m_DataStream.Write(jsonOut, 0, jsonOut.Length);
         }
