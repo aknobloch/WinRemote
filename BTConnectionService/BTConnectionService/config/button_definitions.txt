@@ -6,7 +6,7 @@
 # Action is single keystroke, defined in the format <Modifier>+<Keys>
 # The modifier is optional. The keys are specified via InputSimulator.VirtualKeyCode
 # or the values 0-9 and A-Z. For the config file, do not include the VK_ prefix
-# Full list here: https://msdn.microsoft.com/en-us/library/dd375731(VS.85).aspx
+# Full list of keycodes here: https://msdn.microsoft.com/en-us/library/dd375731(VS.85).aspx
 #
 # For example, to specify the shorcut named "Select All" with the control key as the
 # modifier and the 'a' key as the pressed key, the definition would look like the following:
@@ -18,7 +18,7 @@
 # Save All;CONTROL,LSHIFT+S
 
 
-Space;SPACE
 Escape;ESCAPE
+Enter;RETURN
 Select All;CONTROL+A
 Save All;CONTROL,LSHIFT+S
