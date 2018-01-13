@@ -10,7 +10,7 @@ namespace BTConnectionService
     {
         public const bool DEBUG_MODE = true;
 
-        public static void write(string message)
+        public static void Write(string message)
         {
             if (DEBUG_MODE == false)
             {
@@ -25,7 +25,7 @@ namespace BTConnectionService
 
         internal static void write(int message)
         {
-            write("" + message);
+            Write("" + message);
         }
     }
 }

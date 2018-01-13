@@ -21,9 +21,6 @@ public class WinAction
 	@SerializedName("m_Name")
 	private String m_Name;
 
-	@SerializedName("m_SendKeysAciton")
-	private String m_SendKeysAction;
-
 	public WinAction()
 	{
 		// needed by GSON parser
@@ -35,12 +32,11 @@ public class WinAction
 	 * of a button defined on the Windows side, and
 	 * cannot be changed after creation.
 	 */
-	public WinAction(int uniqueID, String template, String name, String action)
+	public WinAction(int uniqueID, String template, String name)
 	{
 		this.m_ID = uniqueID;
 		this.m_Template = template;
 		this.m_Name = name;
-		this.m_SendKeysAction = action;
 	}
 
 	public int getID()

@@ -4,38 +4,42 @@ using System.IO;
 
 namespace BTConnectionService.control
 {
-    class ButtonLoader
+    class WinActionLoader
     {
         const string BUTTON_FILE_PATH = "config\\button_definitions.txt";
+        private static List<WinAction> m_ButtonList;
 
-        List<WinAction> buttonList;
-
-        public void LoadButtons()
+        private WinActionLoader()
         {
-            buttonList = new List<WinAction>();
+            // prevent instantiation, static class
+        }
+        
+        private static void LoadActions()
+        {
+            m_ButtonList = new List<WinAction>();
 
             using (StreamReader fileIn = File.OpenText(BUTTON_FILE_PATH))
             {
                 string nextLine = "";
                 while((nextLine = fileIn.ReadLine()) != null)
                 {
-                    if(nextLine.StartsWith("#"))
+                    if(nextLine.StartsWith("#") || string.IsNullOrWhiteSpace(nextLine))
                     {
                         continue;
                     }
 
-                    AddButton(nextLine);
+                    AddAction(nextLine);
                 }
             }
         }
 
-        private void AddButton(string line)
+        private static void AddAction(string line)
         {
             string[] lineInfo = line.Split(';');
 
             if(lineInfo.Length < 2 || lineInfo.Length > 3)
             {
-                Log.write("Skipping invalid button config definition: " + line);
+                Log.Write("Skipping invalid button config definition: " + line);
             }
 
             string template;
@@ -55,8 +59,8 @@ namespace BTConnectionService.control
                 action = lineInfo[1];
             }
 
-            WinAction newButton = new WinAction(buttonList.Count, template, name, action);
-            buttonList.Add(newButton);
+            WinAction newButton = new WinAction(m_ButtonList.Count, template, name, action);
+            m_ButtonList.Add(newButton);
         }
 
         /// <summary>
@@ -65,14 +69,32 @@ namespace BTConnectionService.control
         /// implicitly by this method.
         /// </summary>
         /// <returns></returns>
-        public List<WinAction> GetButtons()
+        public static List<WinAction> GetWinActions()
         {
-            if(buttonList == null)
+            if(m_ButtonList == null)
             {
-                LoadButtons();
+                LoadActions();
             }
 
-            return buttonList;
+            return m_ButtonList;
+        }
+
+        /// <summary>
+        /// Gets the button referenced by the given ID
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns></returns>
+        public static WinAction GetWinActionByID(int ID)
+        {
+            foreach(WinAction action in GetWinActions())
+            {
+                if(action.GetID() == ID)
+                {
+                    return action;
+                }
+            }
+
+            throw new System.ArgumentOutOfRangeException("ID", ID, "ID value could not be found in available actions.");
         }
     }
 }

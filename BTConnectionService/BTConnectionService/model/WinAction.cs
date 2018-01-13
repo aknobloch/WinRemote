@@ -18,16 +18,30 @@ namespace BTConnectionService.model
 
         [DataMember]
         string m_Name;
-
-        [DataMember]
-        string m_SendKeysAction;
+        
+        string m_ActionString;
 
         public WinAction(int id, string template, string name, string action)
         {
             this.m_ID = id;
             this.m_Template = template;
             this.m_Name = name;
-            this.m_SendKeysAction = action;
+            this.m_ActionString = action;
+        }
+
+        public string GetActionString()
+        {
+            return m_ActionString;
+        }
+
+        public int GetID()
+        {
+            return m_ID;
+        }
+
+        public string GetName()
+        {
+            return m_Name;
         }
     }
 }

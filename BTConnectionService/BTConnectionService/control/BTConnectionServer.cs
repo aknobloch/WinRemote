@@ -9,6 +9,7 @@ using InTheHand.Net.Sockets;
 using System.IO;
 using System.Threading;
 using BTConnectionService.control;
+using BTConnectionService.model;
 
 namespace BTConnectionService
 {
@@ -24,25 +25,23 @@ namespace BTConnectionService
         
         public void StartSynchronousServer()
         {
-            Log.write("Initializing server w/ UUID: " + UUID.ToString());
+            Log.Write("Initializing server w/ UUID: " + UUID.ToString());
 
             var bluetoothListener = new BluetoothListener(UUID);
             bluetoothListener.Start();
 
-            Log.write("Server socket initialized.");
+            Log.Write("Server socket initialized.");
 
             while (m_ServerRunning)
             {
-                Log.write("Waiting for connection...");
+                Log.Write("Waiting for connection...");
                 BluetoothClient connection = bluetoothListener.AcceptBluetoothClient();
 
-                Log.write("Connection established.");
+                Log.Write("Connection established.");
                 BTDataIO clientStream = new BTDataIO(connection.GetStream());
-
-                ButtonLoader loader = new ButtonLoader();
-                loader.LoadButtons();
-
-                clientStream.SendButtons(loader.GetButtons());
+                List<WinAction> actions = WinActionLoader.GetWinActions();
+                
+                clientStream.SendActionsToClient(actions);
                 
                 while (clientStream.CanRead())
                 {
@@ -50,7 +49,7 @@ namespace BTConnectionService
                 }
             }
             
-            Log.write("Server closed.");
+            Log.Write("Server closed.");
         }
 
         /// <summary>
@@ -60,11 +59,11 @@ namespace BTConnectionService
         /// <param name="clientStream"></param>
         private void ReadAndExecuteNextActions(BTDataIO clientStream)
         {
-            List<string> sentAction = clientStream.Read();
+            List<WinAction> receivedActions = clientStream.Read();
 
-            if (sentAction.Count > 0) // TODO greater than 0
+            if (receivedActions.Count > 0) // TODO greater than 0
             {
-                foreach (string action in sentAction)
+                foreach (WinAction action in receivedActions)
                 {
                     ExecuteAction.Execute(action);
                 }

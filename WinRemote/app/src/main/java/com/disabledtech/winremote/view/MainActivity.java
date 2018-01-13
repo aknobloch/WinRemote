@@ -255,6 +255,11 @@ public class MainActivity extends AppCompatActivity
 	 */
 	private void populateActivityButtons(List<WinAction> userActions)
 	{
+		if(userActions.size() == 0)
+		{
+			Device.showToast(this, "Server has no buttons defined.");
+		}
+
 		GridLayout layout = (GridLayout) findViewById(R.id.grid_layout);
 
 		// TODO pretty buttons

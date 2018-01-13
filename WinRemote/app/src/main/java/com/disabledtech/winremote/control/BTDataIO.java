@@ -2,6 +2,7 @@ package com.disabledtech.winremote.control;
 
 import android.bluetooth.BluetoothSocket;
 import android.util.JsonReader;
+import android.util.Log;
 
 import com.disabledtech.winremote.exceptions.ServerConnectionClosedException;
 import com.disabledtech.winremote.model.WinAction;
@@ -78,8 +79,14 @@ public class BTDataIO
 	{
 		String jsonData = readServerString();
 
+		Debug.log("Received action data: " + jsonData);
 		Gson jsonParser = new GsonBuilder().create();
 		WinAction[] serverActions = jsonParser.fromJson(jsonData,  WinAction[].class);
+
+		if(serverActions == null)
+		{
+			return new ArrayList<WinAction>(); // TODO exception so view can handle
+		}
 
 		List<WinAction> serverActionList = Arrays.asList(serverActions);
 
@@ -91,7 +98,8 @@ public class BTDataIO
 	 * Reads JSON data from the server socket, returning a string
 	 * of the data that was read.
 	 *
-	 * FIXME: This is a blocking method, but for now data is small enough to be insignificant.
+	 * FIXME: This is a blocking method, but for now data is small and fast enough to be insignificant.
+	 *
 	 * @return
 	 * @throws IOException
 	 */
@@ -100,12 +108,13 @@ public class BTDataIO
 		ByteArrayOutputStream bufferedOutput = new ByteArrayOutputStream();
 		InputStream serverStream = m_ServerSocket.getInputStream();
 
+		bufferedOutput.write(serverStream.read()); // blocks for beginning of server data
+
 		while(serverStream.available() > 0)
 		{
 			bufferedOutput.write(serverStream.read());
 		}
 
-		serverStream.close();
 		bufferedOutput.flush();
 
 		byte[] rawData = bufferedOutput.toByteArray();

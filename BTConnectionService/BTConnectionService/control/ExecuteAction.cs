@@ -1,32 +1,18 @@
-﻿using System.Windows.Forms;
+﻿using BTConnectionService.model;
+using BTConnectionService.utils;
+using WindowsInput;
+using WindowsInput.Native;
 
 namespace BTConnectionService.control
 {
     class ExecuteAction
-    {
-        public static void Copy()
+    { 
+        public static void Execute(WinAction action)
         {
-            SendKeys.SendWait("^c");
-        }
+            VirtualKeyCode[][] modifierAndKeys = WinActionParser.ParseAction(action);
 
-        public static void Paste()
-        {
-            SendKeys.SendWait("^v");
-        }
-
-        public static void SelectAll()
-        {
-            SendKeys.SendWait("^a");
-        }
-
-        public static void AltTab()
-        {
-            SendKeys.SendWait("%({TAB})");
-        }
-
-        public static void Execute(string keyCommand)
-        {
-            SendKeys.SendWait(keyCommand);
+            InputSimulator simulator = new InputSimulator();
+            simulator.Keyboard.ModifiedKeyStroke(modifierAndKeys[0], modifierAndKeys[1]);
         }
     }
 }
