@@ -1,6 +1,7 @@
 package com.disabledtech.winremote.model;
 
 import android.content.Context;
+import android.view.ViewGroup;
 import android.widget.Button;
 
 /**

@@ -16,7 +16,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridLayout;
+import android.widget.AdapterView;
+import android.widget.GridView;
 
 import com.disabledtech.winremote.R;
 import com.disabledtech.winremote.control.BTConnectionClient;
@@ -32,13 +33,14 @@ import java.io.IOException;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-		implements NavigationView.OnNavigationItemSelectedListener, IServerConnectionListener, View.OnClickListener
+		implements NavigationView.OnNavigationItemSelectedListener, IServerConnectionListener, AdapterView.OnItemClickListener
 {
 
 	private static final int REQUEST_ACCESS_COARSE_LOCATION = 1; // used to identify permission requests
 
 	private BTConnectionClient m_ConnectionClient;
 	private BTDataIO m_DataIO;
+	private WinActionViewAdapter m_ActionViewAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -56,20 +58,11 @@ public class MainActivity extends AppCompatActivity
 		m_DataIO.closeConnection();
 	}
 
-	/**
-	 * Called when a component of the UI is pressed.
-	 *
-	 * @param view
-	 */
-	public void onClick(View view)
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 	{
-		if (view instanceof WinActionButton)
-		{
-			handleWinButtonPressed((WinActionButton) view);
-			return;
-		}
-
-		Debug.logError("UI view click not implemented!");
+		WinActionButton buttonPressed = (WinActionButton) m_ActionViewAdapter.getItem(position);
+		handleWinButtonPressed(buttonPressed);
 	}
 
 	private void handleWinButtonPressed(WinActionButton buttonPressed)
@@ -260,15 +253,11 @@ public class MainActivity extends AppCompatActivity
 			Device.showToast(this, "Server has no buttons defined.");
 		}
 
-		GridLayout layout = (GridLayout) findViewById(R.id.grid_layout);
+		GridView layout = (GridView) findViewById(R.id.grid_layout);
+		this.m_ActionViewAdapter = new WinActionViewAdapter(this, userActions);
+		layout.setAdapter(m_ActionViewAdapter);
 
-		// TODO pretty buttons
-		for (WinAction action : userActions)
-		{
-			WinActionButton actionButton = new WinActionButton(this, action);
-			actionButton.setOnClickListener(this);
-			layout.addView(actionButton);
-		}
+		layout.setOnItemClickListener(this);
 	}
 
 	@Override
