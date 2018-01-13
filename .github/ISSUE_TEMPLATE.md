@@ -1,12 +1,13 @@
-# User Story 
-As a <noun> I need to <action>, so that I can <benefit>. 
+# Brief Description
+Enter a brief bug description here.
 
-# Acceptance Stories
-#### Scenario: <Name>
-Given <context>,
-and <additional context>...
-when <event>
-then <outcome>
-and <additional outcomes>...
+# Steps to Replicate
+1. First, ....
+2. Then, ....
+3. Finally, .....
 
-# Additional Details
+# Expected Outcome
+Describe what the expected result of performing the above steps would be.
+
+# Actual Result
+Describe what actually happens when performing above steps.
