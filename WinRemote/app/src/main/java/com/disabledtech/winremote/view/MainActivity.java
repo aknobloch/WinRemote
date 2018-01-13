@@ -130,8 +130,7 @@ public class MainActivity extends AppCompatActivity
 	 */
 	private void clearButtons()
 	{
-		ViewGroup gridButtonGroup = (ViewGroup) findViewById(R.id.grid_layout);
-		gridButtonGroup.removeAllViews();
+		m_ActionViewAdapter.removeAllActions();
 	}
 
 	@Override

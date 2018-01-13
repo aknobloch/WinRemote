@@ -20,5 +20,5 @@
 
 Escape;ESCAPE
 Enter;RETURN
-Select All;CONTROL+A
-Save All;CONTROL,LSHIFT+S
+Space;SPACE
+Swap Screen;MENU+TAB

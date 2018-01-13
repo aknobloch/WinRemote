@@ -61,4 +61,10 @@ public class WinActionViewAdapter extends BaseAdapter
 	{
 		return m_ButtonList.get(position);
 	}
+
+	public void removeAllActions()
+	{
+		m_ButtonList.clear();
+		notifyDataSetChanged();
+	}
 }
