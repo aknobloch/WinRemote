@@ -58,6 +58,9 @@ freeline_project_description.json
 
 # ============================ BEGIN Visual Studio PROJECT ============================
 
+# User button config
+button_definitions.txt
+
 # User-specific files
 *.suo
 *.user
