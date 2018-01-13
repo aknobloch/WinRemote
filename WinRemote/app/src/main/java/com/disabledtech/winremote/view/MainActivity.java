@@ -33,7 +33,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-		implements NavigationView.OnNavigationItemSelectedListener, IServerConnectionListener, AdapterView.OnItemClickListener
+		implements NavigationView.OnNavigationItemSelectedListener, IServerConnectionListener, View.OnClickListener
 {
 
 	private static final int REQUEST_ACCESS_COARSE_LOCATION = 1; // used to identify permission requests
@@ -59,10 +59,15 @@ public class MainActivity extends AppCompatActivity
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+	public void onClick(View view)
 	{
-		WinActionButton buttonPressed = (WinActionButton) m_ActionViewAdapter.getItem(position);
-		handleWinButtonPressed(buttonPressed);
+		if (view instanceof WinActionButton)
+		{
+			handleWinButtonPressed((WinActionButton) view);
+			return;
+		}
+
+		Debug.logError("UI view click not implemented!");
 	}
 
 	private void handleWinButtonPressed(WinActionButton buttonPressed)
@@ -71,7 +76,7 @@ public class MainActivity extends AppCompatActivity
 		{
 			m_DataIO.send(buttonPressed.getWinAction());
 		}
-		catch(ServerConnectionClosedException scce)
+		catch (ServerConnectionClosedException scce)
 		{
 			// TODO better UI handling
 			Device.showToast(this, "Server connection lost.");
@@ -113,7 +118,7 @@ public class MainActivity extends AppCompatActivity
 	 */
 	private void closeServerConnection()
 	{
-		if(m_DataIO == null) return;
+		if (m_DataIO == null) return;
 
 		m_DataIO.closeConnection();
 		m_DataIO = null;
@@ -232,8 +237,7 @@ public class MainActivity extends AppCompatActivity
 		{
 			List<WinAction> userActions = m_DataIO.getActionData();
 			populateActivityButtons(userActions);
-		}
-		catch(IOException ioe)
+		} catch (IOException ioe)
 		{
 			Debug.log(ioe.getMessage());
 			Device.showToast(this, "Failure reading buttons from server!");
@@ -248,16 +252,14 @@ public class MainActivity extends AppCompatActivity
 	 */
 	private void populateActivityButtons(List<WinAction> userActions)
 	{
-		if(userActions.size() == 0)
+		if (userActions.size() == 0)
 		{
 			Device.showToast(this, "Server has no buttons defined.");
 		}
 
 		GridView layout = (GridView) findViewById(R.id.grid_layout);
-		this.m_ActionViewAdapter = new WinActionViewAdapter(this, userActions);
+		this.m_ActionViewAdapter = new WinActionViewAdapter(this, this, userActions);
 		layout.setAdapter(m_ActionViewAdapter);
-
-		layout.setOnItemClickListener(this);
 	}
 
 	@Override
