@@ -10,7 +10,7 @@ There is nothing to install at this time, simply run the server executable and t
 
 ### Creating Custom Shortcuts
 
-While we hope to one day support a graphical and robust way of defining shortcuts, the current implementation of WinRemote relies on some manual editing of a configuration file. This file, and instructions for editing, can be found in the `BTConnectionService/config/button_definitions.txt` file. **After modifications are made, you will need to reset the Android application by either disconnecting and reconnecting, or simple closing and re-opening the app.**
+While we hope to one day support a graphical and robust way of defining shortcuts, the current implementation of WinRemote relies on some manual editing of a configuration file. This file, and instructions for editing, can be found in the `BTConnectionService/config/button_definitions.txt` file. **After modifications are made, you will need to reset the Android application by either disconnecting and reconnecting, or simply closing and re-opening the app.**
 
 # Contributing
 
